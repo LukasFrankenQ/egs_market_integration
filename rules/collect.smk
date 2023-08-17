@@ -44,7 +44,7 @@ rule prepare_sector_networks:
     input:
         expand(
             RESULTS
-            + "prenetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
+            + "prenetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}.nc",
             **config["scenario"]
         ),
 
@@ -61,7 +61,7 @@ rule solve_sector_networks:
     input:
         expand(
             RESULTS
-            + "postnetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
+            + "postnetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}.nc",
             **config["scenario"]
         ),
 
@@ -70,6 +70,6 @@ rule plot_networks:
     input:
         expand(
             RESULTS
-            + "maps/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}-costs-all_{planning_horizons}.pdf",
+            + "maps/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}-costs-all_{planning_horizons}_{egs_capex}.pdf",
             **config["scenario"]
         ),

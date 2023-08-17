@@ -188,7 +188,7 @@ import geopandas as gpd
 import numpy as np
 import xarray as xr
 from _helpers import configure_logging
-from dask.distributed import Client
+from dask.distributed import Client, LocalCluster
 from pypsa.geo import haversine
 from shapely.geometry import LineString
 
@@ -218,7 +218,8 @@ if __name__ == "__main__":
         logger.info(f"correction_factor is set as {correction_factor}")
 
     if nprocesses > 1:
-        client = Client(n_workers=nprocesses, threads_per_worker=1)
+        client = LocalCluster(n_workers=nprocesses, threads_per_worker=1)
+        # client = Client(n_workers=nprocesses, threads_per_worker=1)
     else:
         client = None
 
@@ -372,4 +373,6 @@ if __name__ == "__main__":
         ds["profile"] = ds["profile"].where(ds["profile"] >= min_p_max_pu, 0)
 
     ds.to_netcdf(snakemake.output.profile)
-    client.shutdown()
+
+    if client is not None:
+        client.shutdown()

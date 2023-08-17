@@ -33,7 +33,6 @@ BENCHMARKS = "benchmarks/" + RDIR
 RESOURCES = "resources/" + RDIR if not run.get("shared_resources") else "resources/"
 RESULTS = "results/" + RDIR
 
-
 localrules:
     purge,
 
@@ -44,6 +43,7 @@ wildcard_constraints:
     ll="(v|c)([0-9\.]+|opt)",
     opts="[-+a-zA-Z0-9\.]*",
     sector_opts="[-+a-zA-Z0-9\.\s]*",
+	egs_capex="[0-9]*"
 
 
 include: "rules/common.smk"

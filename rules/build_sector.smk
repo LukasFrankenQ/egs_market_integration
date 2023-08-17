@@ -780,17 +780,17 @@ rule prepare_sector_network:
         else [],
     output:
         RESULTS
-        + "prenetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc",
+        + "prenetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}.nc",
     threads: 1
     resources:
         mem_mb=2000,
     log:
         LOGS
-        + "prepare_sector_network_elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.log",
+        + "prepare_sector_network_elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}.log",
     benchmark:
         (
             BENCHMARKS
-            + "prepare_sector_network/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}"
+            + "prepare_sector_network/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}"
         )
     conda:
         "../envs/environment.yaml"

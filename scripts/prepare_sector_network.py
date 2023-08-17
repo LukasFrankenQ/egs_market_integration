@@ -29,6 +29,7 @@ from networkx.algorithms.connectivity.edge_augmentation import k_edge_augmentati
 from pypsa.geo import haversine_pts
 from pypsa.io import import_components_from_dataframe
 from scipy.stats import beta
+from vresutils.costdata import annuity
 
 logger = logging.getLogger(__name__)
 
@@ -3254,6 +3255,147 @@ def set_temporal_aggregation(n, opts, solver_name):
     return n
 
 
+def add_sweep_egs(n, snakemake, costs):
+
+    config = snakemake.config
+    nodes = pop_layout.index
+
+    config = snakemake.config
+
+    dr = config["costs"]["fill_values"]["discount rate"]
+    lt = costs.at["geothermal", "lifetime"]
+    annuity_factor = annuity(lt, r=dr)
+
+    orc_fom = config["sector"]["egs_orc_FOM"]
+
+    # annuitizing costs
+    drilling_cost = float(snakemake.wildcards.egs_capex) * 1000  # Euro/kW -> Euro/MW
+    logger.info("Received wildcard drilling cost: ", drilling_cost)
+
+    injection_well_cost = annuity_factor * drilling_cost / 2.
+    production_well_cost = annuity_factor * drilling_cost / 2.
+    # district_heating_cost = annuity_factor * config["sector"]["egs_district_heating_capex"]
+    orc_cost = (annuity_factor + orc_fom) * config["sector"]["egs_orc_capex"]
+
+    dh_maxcost = annuity_factor * config["sector"]["egs_district_heating_max_cost"]
+    dh_steps = config["sector"]["egs_district_heating_cost_steps"]
+    dh_costrange = np.linspace(0, dh_maxcost, dh_steps)
+
+    eta_el = config["sector"]["egs_efficiency_electricity"]
+    eta_dh = config["sector"]["egs_efficiency_district_heating"]
+
+    logger.info("electric efficiency: ", eta_el)
+    logger.info("district heating efficiency: ", eta_dh)
+
+    n.add(
+        "Bus",
+        "EU geothermal heat bus",
+        carrier="geothermal heat",
+        unit="MWh_th",
+        location="EU",
+        )
+
+    n.add(
+        "Generator",
+        "EU geothermal heat",
+        bus="EU geothermal heat bus",
+        carrier="geothermal heat",
+        p_nom_max=1e9,
+        capital_cost=0.0,
+        marginal_cost=0.0,
+        p_nom_extendable=True,
+    )
+
+    n.madd(
+        "Bus",
+        nodes,
+        suffix=" geothermal reservoir bus",
+        carrier="geothermal heat",
+        unit="MWh_th",
+        location=nodes,
+        )
+
+    n.madd(
+        "Link",
+        nodes,
+        suffix=" geothermal injection well",
+        bus0="EU geothermal heat bus",
+        bus1=nodes + " geothermal reservoir bus",
+        location=nodes,
+        capital_cost=injection_well_cost,
+        p_nom_extendable=True,
+        carrier="geothermal heat",
+    )
+
+    n.madd(
+        "Bus",
+        nodes,
+        suffix=" geothermal surface bus",
+        carrier="geothermal heat",
+        unit="MWh_th",
+        location=nodes,
+        )
+
+    n.madd(
+        "Link",
+        nodes,
+        suffix=" geothermal production well",
+        bus0=nodes + " geothermal reservoir bus",
+        bus1=nodes + " geothermal surface bus",
+        location=nodes,
+        capital_cost=production_well_cost,
+        p_nom_extendable=True,
+        carrier="geothermal heat",
+    )
+
+    n.madd(
+        "Link",
+        nodes,
+        suffix=" geothermal orc plant",
+        bus0=nodes + " geothermal surface bus",
+        bus1=nodes,
+        # efficiency=costs.at["geothermal", "efficiency electricity"],
+        efficiency=eta_el,
+        location=nodes,
+        capital_cost=orc_cost,
+        p_nom_extendable=True,
+        carrier="geothermal heat",
+    )
+
+    p_nom_max = n.loads_t.p_set[
+        nodes + " urban central heat"
+        ].mean(axis=0) / dh_steps
+
+    logger.info("default capital cost of district heating")
+    logger.info("dh_costrange")
+    logger.info(dh_costrange)
+
+    for i, cc in enumerate(dh_costrange):
+
+        n.madd(
+            "Link",
+            nodes,
+            suffix=f" geothermal district heating {i}",
+            bus0=nodes + " geothermal surface bus",
+            bus1=nodes + " urban central heat",
+            # efficiency=costs.at["geothermal", "efficiency residential heat"],
+            efficiency=eta_dh,
+            location=nodes,
+            # capital_cost=cc,
+            capital_cost=cc,
+            p_nom_extendable=True,
+            p_nom_max=p_nom_max.values / eta_dh,
+            carrier="geothermal heat",
+        )
+
+
+    n.generators.to_csv("generators.csv")
+    n.links.to_csv("links.csv")
+    n.stores.to_csv("stores.csv")
+    n.buses.to_csv("buses.csv")
+
+
+
 if __name__ == "__main__":
     if "snakemake" not in globals():
         from _helpers import mock_snakemake
@@ -3422,8 +3564,24 @@ if __name__ == "__main__":
     if options.get("cluster_heat_buses", False) and not first_year_myopic:
         cluster_heat_buses(n)
 
+    if options.get("egs"):
+        n.add(
+            "Carrier",
+            "geothermal heat",
+            nice_name="Geothermal Heat",
+            color=snakemake.config["plotting"]["tech_colors"]["geothermal heat"],
+            # co2_emissions=costs.loc["geothermal", "CO2 intensity"],
+            co2_emissions=0.,
+        )
+
+        if options.get("egs_sweep_run"):
+            logger.info("Adding EGS sweep to model")
+            add_sweep_egs(n, snakemake, costs)
+
     n.meta = dict(snakemake.config, **dict(wildcards=dict(snakemake.wildcards)))
 
     sanitize_carriers(n, snakemake.config)
+
+    n.generators.to_csv('generators.csv')
 
     n.export_to_netcdf(snakemake.output[0])
