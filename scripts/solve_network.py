@@ -569,6 +569,28 @@ def add_pipe_retrofit_constraint(n):
     n.model.add_constraints(lhs == rhs, name="Link-pipe_retrofit")
 
 
+def add_egs_constraint(n):
+    """
+    Relevant when the geothermal reservoir is used as storage.
+    Upper bounds the reletive nominal power of injection and production well
+    to production well capacity <= 1.25 injection well capacity,
+    reflecting findings by Ricks et al. 2022
+    """
+
+    production_index = n.links.index.str.contains['geothermal production well']
+    production_index = n.links.index[production_index]
+
+    injection_index = n.links.index.str.contains['geothermal injection well']
+    injection_index = n.links.index[injection_index]
+
+    n.model.add_constraints(
+        n.model["Link-p_nom"].loc[production_index] -
+        1.25 * n.model["Link-p_nom"].loc[injection_index]
+        <= 0.,
+        name="geothermal production well upper bound rel. to injection well"
+    )
+    
+
 def extra_functionality(n, snapshots):
     """
     Collects supplementary constraints which will be passed to
@@ -594,6 +616,7 @@ def extra_functionality(n, snapshots):
             add_EQ_constraints(n, o)
     add_battery_constraints(n)
     add_pipe_retrofit_constraint(n)
+    add_egs_constraint(n)
 
 
 def solve_network(n, config, solving, opts="", **kwargs):
