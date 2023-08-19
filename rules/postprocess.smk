@@ -15,20 +15,20 @@ rule plot_network:
     input:
         overrides="data/override_component_attrs",
         network=RESULTS
-        + "postnetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}.nc",
+        + "postnetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}.nc",
         regions=RESOURCES + "regions_onshore_elec_s{simpl}_{clusters}.geojson",
     output:
         map=RESULTS
-        + "maps/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}-costs-all_{planning_horizons}_{egs_capex}.pdf",
+        + "maps/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}-costs-all_{planning_horizons}_{egs_capex}_{egs_mode}.pdf",
         today=RESULTS
-        + "maps/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}-today.pdf",
+        + "maps/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}-today.pdf",
     threads: 2
     resources:
         mem_mb=10000,
     benchmark:
         (
             BENCHMARKS
-            + "plot_network/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}"
+            + "plot_network/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}"
         )
     conda:
         "../envs/environment.yaml"
@@ -79,7 +79,7 @@ rule make_summary:
         overrides="data/override_component_attrs",
         networks=expand(
             RESULTS
-            + "postnetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}.nc",
+            + "postnetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}.nc",
             **config["scenario"]
         ),
         costs="data/costs_{}.csv".format(config["costs"]["year"])
@@ -87,7 +87,7 @@ rule make_summary:
         else "data/costs_{}.csv".format(config["scenario"]["planning_horizons"][0]),
         plots=expand(
             RESULTS
-            + "maps/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}-costs-all_{planning_horizons}_{egs_capex}.pdf",
+            + "maps/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}-costs-all_{planning_horizons}_{egs_capex}_{egs_mode}.pdf",
             **config["scenario"]
         ),
     output:

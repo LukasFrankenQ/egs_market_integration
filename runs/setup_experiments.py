@@ -2,6 +2,7 @@ import os
 import yaml
 import pandas as pd
 from pathlib import Path
+from itertools import product
 
 import logging
 
@@ -9,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 capex_list = [1000]
+mode_list = ["elec", "dh", "chp"]
 clusters = 100
 
 security_lock = False
@@ -18,6 +20,7 @@ root = Path("/exports/csce/eddie/eng/groups/energy-systems-group/projects/basic_
 
 if security_lock:
 	capex_list = capex_list[:1]
+	mode_list = mode_list[:1]
 	logger.warning("Security Lock is switched on, setting up only one experiment!")
 else:
 	logger.warning("Security Lock is switched off")
@@ -37,36 +40,37 @@ def retrieve_licence(lfile):
 			return current_lic
 
 
-def setup_config(rundir, capex):
+def setup_config(rundir, capex, mode):
 
 	config_base = root / "config" / "config.yaml"
 
-	config_target = rundir / f"config_{int(capex)}.yaml"
+	config_target = rundir / f"config_{int(capex)}_{mode}.yaml"
 
 	with open(config_base, "r") as f:
 		config = yaml.safe_load(f)
 
 	config["scenario"]["egs_capex"] = capex
+	config["scenario"]["egs_mode"] = mode
 
 	logger.info(f"Storing resulting config as {config_target}.")
 	with open(config_target, "w") as f:
 		yaml.dump(config, f)
 
 
-def create_scripts(rundir, capex):
+def create_scripts(rundir, capex, mode):
 
 	main_fn = rundir / "main.sh"
 
 	facil_fn = rundir / "facil.exp"
 	get_licence_fn = rundir / "get_licence.sh"
 
-	config_file = rundir / f"config_{int(capex)}.yaml"
+	config_file = rundir / f"config_{int(capex)}_{mode}.yaml"
 
 	logger.info(f"Setting up main as {str(main_fn)}")
 
-	model_template = "results/basic_test/{}networks/elec_s_{}_lv1.0__Co2L0-3H-T-H-B-I-solar+p3-dist1_2050_{}.nc"
-	pre_model_name = model_template.format("pre", clusters, capex)
-	post_model_name = model_template.format("post", clusters, capex)
+	model_template = "results/basic_test/{}networks/elec_s_{}_lv1.0__Co2L0-3H-T-H-B-I-solar+p3-dist1_2050_{}_{}.nc"
+	pre_model_name = model_template.format("pre", clusters, capex, mode)
+	post_model_name = model_template.format("post", clusters, capex, mode)
 
 	# main_fn = "testmain.sh"
 	# facil_fn = "testfacil.exp"
@@ -144,15 +148,22 @@ def create_scripts(rundir, capex):
 	os.system(f"chmod +x {get_licence_fn}")
 
 
-for capex in capex_list:
+for capex, mode in product(capex_list, mode_list):
 
-	rundir = root / "runs" / "run_data" / f"run_{int(capex)}_{int(clusters)}"
-	logger.info(f"Setting up experiment in dir {str(rundir)}")
+	rundir = root / "runs" / "run_data" / f"run_{int(capex)}_{mode}_{int(clusters)}"
+	print(f"Setting up experiment in dir {str(rundir)}")
 
-	if rundir.is_file():
-		logger.warning(f"Rundir {str(rundir)} already exists.")
-	os.makedirs(rundir, exist_ok=True)
+	try:
 
-	setup_config(rundir, capex)
-	create_scripts(rundir, capex)
+		if rundir.is_file():
+			logger.warning(f"Rundir {str(rundir)} already exists.")
+		os.makedirs(rundir, exist_ok=True)
 
+		setup_config(rundir, capex, mode)
+		create_scripts(rundir, capex, mode)
+
+		print(f"Created run! CAPEX {capex}, mode {mode}.")
+	
+	except:
+
+		print(f"Failed to create run! CAPEX {capex}, mode {mode}.")

@@ -3260,7 +3260,7 @@ def add_sweep_egs(n, snakemake, costs):
     config = snakemake.config
     nodes = pop_layout.index
 
-    config = snakemake.config
+    mode = snakemake.wildcards["egs_mode"] # can be elec, chp or dh; See below.
 
     dr = config["costs"]["fill_values"]["discount rate"]
     lt = costs.at["geothermal", "lifetime"]
@@ -3348,44 +3348,55 @@ def add_sweep_egs(n, snakemake, costs):
         carrier="geothermal heat",
     )
 
-    n.madd(
-        "Link",
-        nodes,
-        suffix=" geothermal orc plant",
-        bus0=nodes + " geothermal surface bus",
-        bus1=nodes,
-        # efficiency=costs.at["geothermal", "efficiency electricity"],
-        efficiency=eta_el,
-        location=nodes,
-        capital_cost=orc_cost,
-        p_nom_extendable=True,
-        carrier="geothermal heat",
-    )
 
-    p_nom_max = n.loads_t.p_set[
-        nodes + " urban central heat"
-        ].mean(axis=0) / dh_steps
-
-    logger.info("default capital cost of district heating")
-    logger.info("dh_costrange")
-    logger.info(dh_costrange)
-
-    for i, cc in enumerate(dh_costrange):
+    if mode == "elec":
+        logger.info("Adding EGS in mode 'elec'.")
 
         n.madd(
             "Link",
             nodes,
-            suffix=f" geothermal district heating {i}",
+            suffix=" geothermal orc plant",
+            bus0=nodes + " geothermal surface bus",
+            bus1=nodes,
+            efficiency=eta_el,
+            location=nodes,
+            capital_cost=orc_cost,
+            p_nom_extendable=True,
+            carrier="geothermal heat elec",
+        )
+
+    elif mode == "dh":
+        logger.info("Adding EGS in mode 'dh'.")
+
+        n.madd(
+            "Link",
+            nodes,
+            suffix=f" geothermal district heating",
             bus0=nodes + " geothermal surface bus",
             bus1=nodes + " urban central heat",
-            # efficiency=costs.at["geothermal", "efficiency residential heat"],
             efficiency=eta_dh,
             location=nodes,
-            # capital_cost=cc,
-            capital_cost=cc,
+            capital_cost=0.,
             p_nom_extendable=True,
-            p_nom_max=p_nom_max.values / eta_dh,
-            carrier="geothermal heat",
+            carrier="geothermal heat dh",
+        )
+
+    elif mode == "chp":
+        logger.info("Adding EGS in mode 'chp'.")
+
+        n.madd(
+            "Link",
+            nodes,
+            suffix=f" geothermal chp",
+            bus0=nodes + " geothermal surface bus",
+            bus1=nodes,
+            bus1=nodes + " urban central heat",
+            efficiency=eta_el,
+            efficiency2=eta_dh,
+            location=nodes,
+            capital_cost=orc_cost*1.25,
+            p_nom_extendable=True,
+            carrier="geothermal heat chp",
         )
 
 

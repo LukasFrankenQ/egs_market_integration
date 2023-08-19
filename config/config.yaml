@@ -56,6 +56,10 @@ scenario:
   # for myopic foresight
   egs_capex:
   - 1000 # Euro/kW
+  egs_mode: "elec" 
+  # can be 'elec' for electricity only generation
+  # can be 'chp' for electricity and district heat
+  # can 'dh' for district heating only
 
 countries: ['AL', 'AT', 'BA', 'BE', 'BG', 'CH', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GB', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'ME', 'MK', 'NL', 'NO', 'PL', 'PT', 'RO', 'RS', 'SE', 'SI', 'SK']
 
@@ -536,6 +540,7 @@ sector:
   
   egs_efficiency_electricity: 0.1
   egs_efficiency_district_heating: 0.8
+
 
 industry:
   St_primary_fraction:  # fraction of steel produced via primary route versus secondary route (scrap+EAF); today fraction is 0.6
