@@ -3270,7 +3270,7 @@ def add_sweep_egs(n, snakemake, costs):
 
     # annuitizing costs
     drilling_cost = float(snakemake.wildcards.egs_capex) * 1000  # Euro/kW -> Euro/MW
-    logger.info("Received wildcard drilling cost: ", drilling_cost)
+    logger.info(f"Received wildcard drilling cost: {drilling_cost}")
 
     injection_well_cost = annuity_factor * drilling_cost / 2.
     production_well_cost = annuity_factor * drilling_cost / 2.
@@ -3284,8 +3284,8 @@ def add_sweep_egs(n, snakemake, costs):
     eta_el = config["sector"]["egs_efficiency_electricity"]
     eta_dh = config["sector"]["egs_efficiency_district_heating"]
 
-    logger.info("electric efficiency: ", eta_el)
-    logger.info("district heating efficiency: ", eta_dh)
+    logger.info(f"electric efficiency: {eta_el}")
+    logger.info(f"district heating efficiency: {eta_dh}")
 
     n.add(
         "Bus",
@@ -3360,7 +3360,7 @@ def add_sweep_egs(n, snakemake, costs):
             bus1=nodes,
             efficiency=eta_el,
             location=nodes,
-            capital_cost=orc_cost,
+            capital_cost=orc_cost * eta_el,
             p_nom_extendable=True,
             carrier="geothermal heat elec",
         )
@@ -3390,11 +3390,11 @@ def add_sweep_egs(n, snakemake, costs):
             suffix=f" geothermal chp",
             bus0=nodes + " geothermal surface bus",
             bus1=nodes,
-            bus1=nodes + " urban central heat",
+            bus2=nodes + " urban central heat",
             efficiency=eta_el,
             efficiency2=eta_dh,
             location=nodes,
-            capital_cost=orc_cost*1.25,
+            capital_cost=orc_cost * 1.25 * eta_el,
             p_nom_extendable=True,
             carrier="geothermal heat chp",
         )
@@ -3592,7 +3592,5 @@ if __name__ == "__main__":
     n.meta = dict(snakemake.config, **dict(wildcards=dict(snakemake.wildcards)))
 
     sanitize_carriers(n, snakemake.config)
-
-    n.generators.to_csv('generators.csv')
 
     n.export_to_netcdf(snakemake.output[0])

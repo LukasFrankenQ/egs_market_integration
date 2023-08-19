@@ -9,7 +9,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-capex_list = [1000]
+capex_list = [500, 1000, 1500]
 mode_list = ["elec", "dh", "chp"]
 clusters = 100
 
@@ -40,7 +40,7 @@ def retrieve_licence(lfile):
 			return current_lic
 
 
-def setup_config(rundir, capex, mode):
+def setup_config(rundir, capex, mode, clusters):
 
 	config_base = root / "config" / "config.yaml"
 
@@ -51,6 +51,7 @@ def setup_config(rundir, capex, mode):
 
 	config["scenario"]["egs_capex"] = capex
 	config["scenario"]["egs_mode"] = mode
+	config["scenario"]["clusters"] = clusters
 
 	logger.info(f"Storing resulting config as {config_target}.")
 	with open(config_target, "w") as f:
@@ -159,11 +160,11 @@ for capex, mode in product(capex_list, mode_list):
 			logger.warning(f"Rundir {str(rundir)} already exists.")
 		os.makedirs(rundir, exist_ok=True)
 
-		setup_config(rundir, capex, mode)
+		setup_config(rundir, capex, mode, clusters)
 		create_scripts(rundir, capex, mode)
 
 		print(f"Created run! CAPEX {capex}, mode {mode}.")
-	
+
 	except:
 
 		print(f"Failed to create run! CAPEX {capex}, mode {mode}.")
