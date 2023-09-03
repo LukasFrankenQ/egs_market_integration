@@ -3327,6 +3327,20 @@ def add_sweep_egs(n, snakemake, costs):
         carrier="geothermal heat",
     )
 
+    if snakemake.wildcards.egs_mode == "flex":
+        n.madd(
+            "StorageUnit",
+            nodes,
+            suffix=" geothermal storage",
+            bus=nodes + " geothermal reservoir bus",
+            location=nodes,
+            capital_cost=0.,
+            marginal_cost=0.,
+            p_nom_extendable=True,
+            max_hours=snakemake.config["sector"]["egs_storage_max_hours"],
+            carrier="geothermal heat",
+        )
+
     n.madd(
         "Bus",
         nodes,
