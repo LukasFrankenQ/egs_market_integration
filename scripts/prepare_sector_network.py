@@ -3404,7 +3404,7 @@ def add_sweep_egs(n, snakemake, costs):
     n.links.to_csv("links.csv")
     n.stores.to_csv("stores.csv")
     n.buses.to_csv("buses.csv")
-
+    n.df("StorageUnit").to_csv("storageunits.csv")
 
 
 if __name__ == "__main__":
