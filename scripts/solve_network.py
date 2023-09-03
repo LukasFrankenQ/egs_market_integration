@@ -617,7 +617,7 @@ def extra_functionality(n, snapshots):
     add_pipe_retrofit_constraint(n)
 
     logger.warning("currently no constraint on injection vs production well")
-    # add_egs_constraint(n)
+    add_egs_constraint(n)
 
 
 def solve_network(n, config, solving, opts="", **kwargs):
