@@ -24,11 +24,11 @@ scenario:
   ll:  # allowed transmission line volume expansion, can be any float >= 1.0 with a prefix v|c (today) or "copt"
   - v1.0
   clusters:  # number of nodes in Europe, any integer between 37 (1 node per country-zone) and several hundred
-  - 72
+  - 100
   opts: # only relevant for PyPSA-Eur
   - ''
   sector_opts: # this is where the main scenario settings are
-  - Co2L0-3H-T-H-B-I-solar+p3-dist1 # recommended to include I, B, definitely B, ideally also I, potential solution, subtract industry demand to not overestimate biomass supply
+  - Co2L0-180H-T-H-B-I-solar+p3-dist1 # recommended to include I, B, definitely B, ideally also I, potential solution, subtract industry demand to not overestimate biomass supply
 
   # to really understand the options here, look in scripts/prepare_sector_network.py
   # Co2Lx specifies the CO2 target in x% of the 1990 values; default will give default (5%);
@@ -55,8 +55,9 @@ scenario:
   # - 2050
   # for myopic foresight
   egs_capex:
-  - 1000 # Euro/kW
-  egs_mode: "elec" 
+  - 1500 # Euro/kW
+  egs_mode: 
+  - "elec" 
   # can be 'elec' for electricity only generation
   # can be 'chp' for electricity and district heat
   # can 'dh' for district heating only
@@ -829,6 +830,7 @@ plotting:
     solar rooftop: '#ffea80'
     # geothermal
     geothermal heat: '#c19e01'
+    geothermal heat elec: '#c19e01'
     geothermal waste heat: '#c19e02'
     # gas
     OCGT: '#e0986c'

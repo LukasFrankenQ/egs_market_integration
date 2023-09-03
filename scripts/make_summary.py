@@ -684,6 +684,10 @@ if __name__ == "__main__":
 
     logging.basicConfig(level=snakemake.config["logging"]["level"])
 
+    print("=============================")
+    print(snakemake.wildcards)
+    print("=============================")
+
     networks_dict = {
         (cluster, ll, opt + sector_opt, planning_horizon): "results/"
         + snakemake.params.RDIR

@@ -40,17 +40,18 @@ def retrieve_licence(lfile):
 			return current_lic
 
 
-def setup_config(rundir, capex, mode, clusters):
+def setup_config(rundir, capex, mode, clusters, egs_op):
 
 	config_base = root / "config" / "config.yaml"
 
-	config_target = rundir / f"config_{int(capex)}_{mode}.yaml"
+	config_target = rundir / f"config_{int(capex)}_{mode}_{egs_op}.yaml"
 
 	with open(config_base, "r") as f:
 		config = yaml.safe_load(f)
 
 	config["scenario"]["egs_capex"] = capex
 	config["scenario"]["egs_mode"] = mode
+	config["scenario"]["egs_op"] = egs_op
 	config["scenario"]["clusters"] = clusters
 
 	logger.info(f"Storing resulting config as {config_target}.")
@@ -58,20 +59,20 @@ def setup_config(rundir, capex, mode, clusters):
 		yaml.dump(config, f)
 
 
-def create_scripts(rundir, capex, mode):
+def create_scripts(rundir, capex, mode, egs_op):
 
 	main_fn = rundir / "main.sh"
 
 	facil_fn = rundir / "facil.exp"
 	get_licence_fn = rundir / "get_licence.sh"
 
-	config_file = rundir / f"config_{int(capex)}_{mode}.yaml"
+	config_file = rundir / f"config_{int(capex)}_{mode}_{egs_op}.yaml"
 
 	logger.info(f"Setting up main as {str(main_fn)}")
 
-	model_template = "results/basic_test/{}networks/elec_s_{}_lv1.0__Co2L0-3H-T-H-B-I-solar+p3-dist1_2050_{}_{}.nc"
-	pre_model_name = model_template.format("pre", clusters, capex, mode)
-	post_model_name = model_template.format("post", clusters, capex, mode)
+	model_template = "results/basic_test/{}networks/elec_s_{}_lv1.0__Co2L0-3H-T-H-B-I-solar+p3-dist1_2050_{}_{}_{}.nc"
+	pre_model_name = model_template.format("pre", clusters, capex, mode, egs_op)
+	post_model_name = model_template.format("post", clusters, capex, mode, egs_op)
 
 	# main_fn = "testmain.sh"
 	# facil_fn = "testfacil.exp"
@@ -151,9 +152,10 @@ def create_scripts(rundir, capex, mode):
 
 for capex, mode in product(capex_list, mode_list):
 
-	rundir = root / "runs" / "run_data" / f"run_{int(capex)}_{mode}_{int(clusters)}"
+	rundir = root / "runs" / "run_data" / f"run_{int(capex)}_{mode}_{int(clusters)}_{egs_op}"
 	print(f"Setting up experiment in dir {str(rundir)}")
 
+	summary = f"CAPEX {capex}, mode {mode}, operation {egs_op}."
 	try:
 
 		if rundir.is_file():
@@ -163,8 +165,8 @@ for capex, mode in product(capex_list, mode_list):
 		setup_config(rundir, capex, mode, clusters)
 		create_scripts(rundir, capex, mode)
 
-		print(f"Created run! CAPEX {capex}, mode {mode}.")
+		print(f"Created run! {summary}")
 
 	except:
 
-		print(f"Failed to create run! CAPEX {capex}, mode {mode}.")
+		print(f"Failed to create run! {summary}.")

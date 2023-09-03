@@ -3327,7 +3327,8 @@ def add_sweep_egs(n, snakemake, costs):
         carrier="geothermal heat",
     )
 
-    if snakemake.wildcards.egs_mode == "flex":
+    if (egs_op := snakemake.wildcards.egs_op) == "flex":
+        logger.info("Adding EGS Reservoir as StorageUnit.")
         n.madd(
             "StorageUnit",
             nodes,
@@ -3337,9 +3338,12 @@ def add_sweep_egs(n, snakemake, costs):
             capital_cost=0.,
             marginal_cost=0.,
             p_nom_extendable=True,
+            cyclic_state_of_charge=True,
             max_hours=snakemake.config["sector"]["egs_storage_max_hours"],
             carrier="geothermal heat",
         )
+    else:
+        assert egs_op == "static", f"Wildcard 'egs_op', should be 'static' or 'flex', not {egs_op}"
 
     n.madd(
         "Bus",

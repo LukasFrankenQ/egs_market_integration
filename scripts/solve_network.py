@@ -615,8 +615,6 @@ def extra_functionality(n, snapshots):
             add_EQ_constraints(n, o)
     add_battery_constraints(n)
     add_pipe_retrofit_constraint(n)
-
-    logger.warning("currently no constraint on injection vs production well")
     add_egs_constraint(n)
 
 
