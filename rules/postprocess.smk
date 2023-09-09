@@ -146,3 +146,53 @@ rule plot_summary:
         "../envs/environment.yaml"
     script:
         "../scripts/plot_summary.py"
+
+
+rule split_network:
+    input:
+        RESULTS
+        + "postnetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}.nc",
+        overrides="data/override_component_attrs",
+    output:
+        generators=RESULTS
+        + "split_networks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}/generators.csv",
+        loads=RESULTS
+        + "split_networks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}/loads.csv",
+        links=RESULTS
+        + "split_networks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}/links.csv",
+        storage_units=RESULTS
+        + "split_networks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}/storage_units.csv",
+        stores=RESULTS
+        + "split_networks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}/stores.csv",
+        generators_t_p=RESULTS
+        + "split_networks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}/generators_t_p.csv",
+        loads_t_pset=RESULTS
+        + "split_networks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}/loads_t_pset.csv",
+        links_t_p0=RESULTS
+        + "split_networks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}/links_t_p0.csv",
+        links_t_p1=RESULTS
+        + "split_networks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}/links_t_p1.csv",
+        links_t_p2=RESULTS
+        + "split_networks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}/links_t_p2.csv",
+        storage_units_t_p=RESULTS
+        + "split_networks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}/storage_units_t_p.csv",
+        stores_t_e=RESULTS
+        + "split_networks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_mode}_{egs_op}/store_t_e.csv",
+        buses=RESULTS
+        + "split_networks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}/buses.csv",
+        config=RESULTS
+        + "split_networks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}/config.yaml",
+    threads: 2
+    resources:
+        mem_mb=10000,
+    log:
+        LOGS
+        + "split_networks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}.log",
+    benchmark:
+        BENCHMARKS
+        + "split_networks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}"
+    conda:
+        "../envs/environment.yaml"
+    script:
+        "../scripts/split_network.py"
+
