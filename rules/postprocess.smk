@@ -150,7 +150,7 @@ rule plot_summary:
 
 rule split_network:
     input:
-        RESULTS
+        network=RESULTS
         + "postnetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}.nc",
         overrides="data/override_component_attrs",
     output:
@@ -177,7 +177,7 @@ rule split_network:
         storage_units_t_p=RESULTS
         + "split_networks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}/storage_units_t_p.csv",
         stores_t_e=RESULTS
-        + "split_networks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_mode}_{egs_op}/store_t_e.csv",
+        + "split_networks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}/store_t_e.csv",
         buses=RESULTS
         + "split_networks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}/buses.csv",
         config=RESULTS
