@@ -9,9 +9,10 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-capex_list = [1]
+capex_list = [500, 1000]
 mode_list = ["elec", "dh", "chp"]
 clusters = 100
+egs_op = "flex"
 
 security_lock = False
 
@@ -162,8 +163,8 @@ for capex, mode in product(capex_list, mode_list):
 			logger.warning(f"Rundir {str(rundir)} already exists.")
 		os.makedirs(rundir, exist_ok=True)
 
-		setup_config(rundir, capex, mode, clusters)
-		create_scripts(rundir, capex, mode)
+		setup_config(rundir, capex, mode, clusters, egs_op)
+		create_scripts(rundir, capex, mode, egs_op)
 
 		print(f"Created run! {summary}")
 

@@ -55,14 +55,14 @@ scenario:
   # - 2050
   # for myopic foresight
   egs_capex:
-  - 1500 # Euro/kW
+  - 1000 # Euro/kW
   egs_mode: 
-  - "elec" 
+  - "dh" 
   # can be 'elec' for electricity only generation
   # can be 'chp' for electricity and district heat
   # can 'dh' for district heating only
   egs_op: # if flexible egs is allowed
-  - "flex" # flexible operations switched ON
+  - "static" # flexible operations switched ON
   # - "static" # switched OFF
 
 countries: ['AL', 'AT', 'BA', 'BE', 'BG', 'CH', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GB', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'ME', 'MK', 'NL', 'NO', 'PL', 'PT', 'RO', 'RS', 'SE', 'SI', 'SK']
@@ -831,6 +831,8 @@ plotting:
     # geothermal
     geothermal heat: '#c19e01'
     geothermal heat elec: '#c19e01'
+    geothermal heat dh: '#c19e01'
+    geothermal heat chp: '#c19e01'
     geothermal waste heat: '#c19e02'
     # gas
     OCGT: '#e0986c'
