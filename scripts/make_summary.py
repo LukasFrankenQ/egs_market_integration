@@ -648,7 +648,7 @@ def make_summaries(networks_dict):
     ]
 
     columns = pd.MultiIndex.from_tuples(
-        networks_dict.keys(), names=["cluster", "ll", "opt", "planning_horizon"]
+        networks_dict.keys(), names=["cluster", "ll", "opt", "planning_horizon", "egs_capex", "egs_mode", "egs_op"]
     )
 
     df = {}
@@ -689,7 +689,7 @@ if __name__ == "__main__":
     print("=============================")
 
     networks_dict = {
-        (cluster, ll, opt + sector_opt, planning_horizon): "results/"
+        (cluster, ll, opt + sector_opt, planning_horizon, egs_capex, egs_mode, egs_op): "results/"
         + snakemake.params.RDIR
         + f"/postnetworks/elec_s{simpl}_{cluster}_l{ll}_{opt}_{sector_opt}_{planning_horizon}_{egs_capex}_{egs_mode}_{egs_op}.nc"
         for simpl in snakemake.params.scenario["simpl"]
