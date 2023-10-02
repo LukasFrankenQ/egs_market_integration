@@ -8,10 +8,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-
-capex_list = [500, 1000]
-mode_list = ["elec", "dh", "chp"]
-clusters = 100
+capex_list = [1400, 1450, 1500]
+# mode_list = ["elec", "dh", "chp"]
+mode_list = ["elec"]
+clusters = 72
 egs_op = "flex"
 
 security_lock = False
@@ -115,7 +115,7 @@ def create_scripts(rundir, capex, mode, egs_op):
 	f.write(f"snakemake -call --configfile {str(config_file)} -- {pre_model_name}\n")
 
 	f.write("snakemake --unlock\n")
-	f.write("source activate old-pypsa-eur\n")
+	# f.write("source activate old-pypsa-eur\n")
 	f.write(f"snakemake -call --touch --configfile {str(config_file)} -- {post_model_name}\n")
 	f.write(f"snakemake -call --configfile {str(config_file)} -- {post_model_name}\n")
 
@@ -153,7 +153,7 @@ def create_scripts(rundir, capex, mode, egs_op):
 
 for capex, mode in product(capex_list, mode_list):
 
-	rundir = root / "runs" / "run_data" / f"run_{int(capex)}_{mode}_{int(clusters)}_{egs_op}"
+	rundir = root / "runs" / "run_data" / f"{mode}_{egs_op}_{int(clusters)}" / f"run_{int(capex)}"
 	print(f"Setting up experiment in dir {str(rundir)}")
 
 	summary = f"CAPEX {capex}, mode {mode}, operation {egs_op}."
