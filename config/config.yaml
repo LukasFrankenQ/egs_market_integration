@@ -24,7 +24,12 @@ scenario:
   ll:  # allowed transmission line volume expansion, can be any float >= 1.0 with a prefix v|c (today) or "copt"
   - v1.0
   clusters:  # number of nodes in Europe, any integer between 37 (1 node per country-zone) and several hundred
-  - 72
+  - 45
+  - 50
+  - 55
+  - 60
+  - 65
+  - 70
   opts: # only relevant for PyPSA-Eur
   - ''
   sector_opts: # this is where the main scenario settings are
@@ -834,8 +839,11 @@ plotting:
     # geothermal
     geothermal heat: '#c19e01'
     geothermal heat elec: '#ffbf00'
+    organic rankine cycle: '#ffbf00'
     geothermal heat dh: '#d19D00'
     geothermal heat chp: '#ffcb2e'
+    geothermal heat chp elec: '#ffbf00'
+    geothermal heat chp district heat: '#ffcb2e'
     # gas
     OCGT: '#e0986c'
     OCGT marginal: '#e0986c'

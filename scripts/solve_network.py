@@ -590,6 +590,22 @@ def add_egs_constraint(n):
         name="geothermal production well upper bound rel. to injection well"
     )
 
+
+def add_egs_chp_constraint(n):
+    elec_index = n.links.loc[n.links.carrier == 'geothermal heat chp elec'].index
+    heat_index = n.links.loc[n.links.carrier == 'geothermal heat chp district heat'].index
+
+    p_nom_lhs = (
+        n.model["Link-p_nom"].loc[heat_index]
+        - n.model["Link-p_nom"].loc[elec_index]
+	)
+
+    n.model.add_constraints(
+        p_nom_lhs == 0,
+        name="equalizes_p_nom_of_chp_elec_and_chp_district_heat",
+    )
+
+
 def extra_functionality(n, snapshots):
     """
     Collects supplementary constraints which will be passed to
@@ -616,6 +632,12 @@ def extra_functionality(n, snapshots):
     add_battery_constraints(n)
     add_pipe_retrofit_constraint(n)
     add_egs_constraint(n)
+    print("wildcards in extra functionality")
+    if "chp" in snakemake.wildcards:
+        add_egs_chp_constraint(n)
+        print("the constraint was applied")
+    else:
+        print("the constraint was not applied")
 
 
 def solve_network(n, config, solving, opts="", **kwargs):
