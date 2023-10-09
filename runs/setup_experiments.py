@@ -8,16 +8,17 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-capex_list = [1100, 1500]
+capex_list = [1100]
 # mode_list = ["elec", "dh", "chp"]
-mode_list = ["elec"]
+mode_list = ["chp"]
 clusters = 72
 egs_op = "static"
+investment_year = 2030
 
 security_lock = False
 
 root = Path("/exports/csce/eddie/eng/groups/energy-systems-group/projects/basic_egs/pypsa-eur")
-
+config_template = "config_{}_{}_{}_{}.yaml"
 
 if security_lock:
 	capex_list = capex_list[:1]
@@ -41,11 +42,11 @@ def retrieve_licence(lfile):
 			return current_lic
 
 
-def setup_config(rundir, capex, mode, clusters, egs_op):
+def setup_config(rundir, investment_year, capex, mode, clusters, egs_op):
 
 	config_base = root / "config" / "config.yaml"
 
-	config_target = rundir / f"config_{int(capex)}_{mode}_{egs_op}.yaml"
+	config_target = rundir / config_template.format(investment_year, int(capex), mode, egs_op)
 
 	with open(config_base, "r") as f:
 		config = yaml.safe_load(f)
@@ -54,26 +55,27 @@ def setup_config(rundir, capex, mode, clusters, egs_op):
 	config["scenario"]["egs_mode"] = mode
 	config["scenario"]["egs_op"] = egs_op
 	config["scenario"]["clusters"] = clusters
+	config["scenario"]["planning_horizons"] = investment_year
 
 	logger.info(f"Storing resulting config as {config_target}.")
 	with open(config_target, "w") as f:
 		yaml.dump(config, f)
 
 
-def create_scripts(rundir, capex, mode, egs_op):
+def create_scripts(rundir, investment_year, capex, mode, egs_op):
 
 	main_fn = rundir / "main.sh"
 
 	facil_fn = rundir / "facil.exp"
 	get_licence_fn = rundir / "get_licence.sh"
 
-	config_file = rundir / f"config_{int(capex)}_{mode}_{egs_op}.yaml"
+	config_file = rundir / config_template.format(investment_year, int(capex), mode, egs_op)
 
 	logger.info(f"Setting up main as {str(main_fn)}")
 
-	model_template = "results/basic_test/{}networks/elec_s_{}_lv1.0__Co2L0-3H-T-H-B-I-solar+p3-dist1_2050_{}_{}_{}.nc"
-	pre_model_name = model_template.format("pre", clusters, capex, mode, egs_op)
-	post_model_name = model_template.format("post", clusters, capex, mode, egs_op)
+	model_template = "results/basic_test/{}networks/elec_s_{}_lv1.0__Co2L0-3H-T-H-B-I-solar+p3-dist1_{}_{}_{}_{}.nc"
+	pre_model_name = model_template.format("pre", clusters, investment_year, capex, mode, egs_op)
+	post_model_name = model_template.format("post", clusters, investment_year, capex, mode, egs_op)
 
 	# main_fn = "testmain.sh"
 	# facil_fn = "testfacil.exp"
@@ -153,18 +155,18 @@ def create_scripts(rundir, capex, mode, egs_op):
 
 for capex, mode in product(capex_list, mode_list):
 
-	rundir = root / "runs" / "run_data" / f"{mode}_{egs_op}_{int(clusters)}" / f"run_{int(capex)}"
+	rundir = root / "runs" / "run_data" / f"{mode}_{egs_op}_{int(clusters)}" / f"run_{int(capex)}_{investment_year}"
 	print(f"Setting up experiment in dir {str(rundir)}")
 
-	summary = f"CAPEX {capex}, mode {mode}, operation {egs_op}."
+	summary = f"CAPEX {capex}, mode {mode}, operation {egs_op}, investment year {investment_year}."
 	try:
 
 		if rundir.is_file():
 			logger.warning(f"Rundir {str(rundir)} already exists.")
 		os.makedirs(rundir, exist_ok=True)
 
-		setup_config(rundir, capex, mode, clusters, egs_op)
-		create_scripts(rundir, capex, mode, egs_op)
+		setup_config(rundir, investment_year, capex, mode, clusters, egs_op)
+		create_scripts(rundir, investment_year, capex, mode, egs_op)
 
 		print(f"Created run! {summary}")
 
