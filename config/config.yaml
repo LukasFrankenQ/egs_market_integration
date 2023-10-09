@@ -24,12 +24,7 @@ scenario:
   ll:  # allowed transmission line volume expansion, can be any float >= 1.0 with a prefix v|c (today) or "copt"
   - v1.0
   clusters:  # number of nodes in Europe, any integer between 37 (1 node per country-zone) and several hundred
-  - 45
-  - 50
-  - 55
-  - 60
-  - 65
-  - 70
+  - 72
   opts: # only relevant for PyPSA-Eur
   - ''
   sector_opts: # this is where the main scenario settings are
@@ -61,7 +56,9 @@ scenario:
   # for myopic foresight
   egs_capex:
   #- 500
+  - 1000
   - 1300
+  - 1350
   egs_mode: 
   # - "dh" 
   - "elec" 

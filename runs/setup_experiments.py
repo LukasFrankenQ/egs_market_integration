@@ -8,11 +8,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-capex_list = [1700]
+capex_list = [1100, 1500]
 # mode_list = ["elec", "dh", "chp"]
-mode_list = ["chp"]
+mode_list = ["elec"]
 clusters = 72
-egs_op = "flex"
+egs_op = "static"
 
 security_lock = False
 
