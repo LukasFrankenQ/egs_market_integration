@@ -47,6 +47,8 @@ scenario:
   # cb40ex0 distributes a carbon budget of 40 GtCO2 following an exponential
   # decay with initial growth rate 0
   planning_horizons: # investment years for myopic and perfect; for overnight, year of cost assumptions can be different and is defined under 'costs'
+  - 2020
+  - 2040
   - 2050
   # for example, set to
   # - 2020
@@ -56,18 +58,16 @@ scenario:
   # for myopic foresight
   egs_capex:
   #- 500
-  - 1000
-  - 1300
-  - 1350
+  - 1500
   egs_mode: 
   # - "dh" 
-  - "elec" 
+  - "chp" 
   #- "chp" 
   # can be 'elec' for electricity only generation
   # can be 'chp' for electricity and district heat
   # can 'dh' for district heating only
   egs_op: # if flexible egs is allowed
-  - "static" # flexible operations switched OFF
+  # - "static" # flexible operations switched OFF
   - "flex" # flexible operations switched ON
 
 countries: ['AL', 'AT', 'BA', 'BE', 'BG', 'CH', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GB', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'ME', 'MK', 'NL', 'NO', 'PL', 'PT', 'RO', 'RS', 'SE', 'SI', 'SK']
