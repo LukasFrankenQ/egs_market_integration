@@ -91,6 +91,7 @@ rule make_summary:
             **config["scenario"]
         ),
     output:
+        nodal_geothermal_stats=RESULTS + "csvs/nodal_geothermal_stats.csv",
         nodal_costs=RESULTS + "csvs/nodal_costs.csv",
         nodal_capacities=RESULTS + "csvs/nodal_capacities.csv",
         nodal_cfs=RESULTS + "csvs/nodal_cfs.csv",

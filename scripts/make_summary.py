@@ -628,8 +628,118 @@ def calculate_price_statistics(n, label, price_statistics):
     return price_statistics
 
 
+def calculate_nodal_geothermal_stats(n, label, nodal_geothermal_stats):
+
+    print("received label: ", label)
+    if "chp" in label:
+        mode = "chp"
+    elif "dh" in label:
+        mode = "dh"
+    elif "elec" in label:
+        mode = "elec"
+    
+    print("Found mode: ", mode)
+
+    generation_targets = {
+        "dh": ["geothermal heat dh"],
+        "chp": ["geothermal heat chp district heat", "geothermal heat chp elec"],
+        "elec": ["geothermal heat elec"],
+    }
+    load_targets = {
+        "dh": ["urban central heat"],
+        "chp": ["urban central heat", "electricity", "AC"],
+        # "elec": ["electricity"],
+        "elec": ["AC"],
+    }
+
+    def get_geothermal_capacity(n, mode):
+
+        gt = pd.concat((
+            (
+                (gg := n.links.loc[n.links.carrier.isin(generation_targets[mode])])["p_nom_opt"] * gg["efficiency"]
+                ).rename('p_nom_opt')
+            ,
+            gg["location"],
+            gg["carrier"]
+        ), axis=1)
+
+        gt.index = gt.location
+
+        gt = pd.concat((
+            gt.loc[gt.carrier == carrier, "p_nom_opt"].rename(carrier) for carrier in gt.carrier.unique()
+        ), axis=1)
+        return gt
+
+    df = get_geothermal_capacity(n, mode)
+    print("received geothermal capacities")
+    print(df)
+
+    buses = n.loads.loc[n.loads.carrier == "electricity"].index
+    geothermal_buses = n.links.loc[n.links.carrier.isin(generation_targets[mode])].bus1.unique()
+
+    gen_gens = n.generators.loc[n.generators.bus.isin(geothermal_buses)]
+
+    def get_total_generation(name):
+        try:
+            return n.generators_t.p[name].sum()
+        except KeyError:
+            return 0.
+
+    gen_gens.loc[:, "total_gen"] = pd.Series(gen_gens.index, gen_gens.index).apply(lambda name: get_total_generation(name))
+
+    gen_links = (gen_links := n.links.loc[n.links.bus1.isin(geothermal_buses)]).loc[gen_links.carrier != "DC"]
+
+    gen_links.loc[:, "total_gen"] = pd.Series(gen_links.index, gen_links.index).apply(lambda name: n.links_t.p1[name].sum() * (-1.))
+    gen_links["bus"] = gen_links.bus1
+
+    all_gens = pd.concat((
+        gen_links[["bus", "total_gen", "carrier"]],
+        gen_gens[["bus", "total_gen", "carrier"]]
+    ))
+
+    geothermal_mask = all_gens.carrier.isin(generation_targets[mode])
+
+    geothermal_gen = (ag := all_gens.loc[geothermal_mask]).groupby(ag.bus.str[:5]).sum()["total_gen"]
+    total_gen = all_gens.groupby(all_gens.bus.str[:5]).sum()["total_gen"]
+
+    df["geothermal generation share"] = geothermal_gen / total_gen
+    
+    renewables = ["solar", "onwind", "offwind-dc", "offwind-ac"]
+
+    for renewable in renewables:
+
+        gens = n.generators.loc[n.generators.carrier == carrier].bus
+        caps = n.generators_t.p_max_pu[gens.index].mean()
+        caps.index = caps.index.str[:5]
+
+        df.loc[gens.tolist(), carrier] = caps
+
+    print("renewable capacity factors")
+    print(df.head())
+
+    def get_dac_capacity(n):
+
+        dac = n.links.loc[n.links.carrier == "DAC"]
+        dac = dac.loc[dac.bus3.str.contains("urban central heat")]
+        dac.index = dac.bus2
+
+        return dac["p_nom_opt"]
+
+    df['dac'] = get_dac_capacity(n)
+
+    df = df.stack()
+
+    nodal_geothermal_stats[label] = df
+
+    nodal_geothermal_stats = nodal_geothermal_stats.reindex(df.index.union(nodal_geothermal_stats.index))
+    nodal_geothermal_stats.loc[df.index, label] = df
+
+    return nodal_geothermal_stats
+
+
 def make_summaries(networks_dict):
     outputs = [
+        "nodal_geothermal_stats",
         "nodal_costs",
         "nodal_capacities",
         "nodal_cfs",
@@ -683,10 +793,6 @@ if __name__ == "__main__":
         snakemake = mock_snakemake("make_summary")
 
     logging.basicConfig(level=snakemake.config["logging"]["level"])
-
-    print("=============================")
-    print(snakemake.wildcards)
-    print("=============================")
 
     networks_dict = {
         (cluster, ll, opt + sector_opt, planning_horizon, egs_capex, egs_mode, egs_op): "results/"
