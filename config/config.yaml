@@ -47,9 +47,7 @@ scenario:
   # cb40ex0 distributes a carbon budget of 40 GtCO2 following an exponential
   # decay with initial growth rate 0
   planning_horizons: # investment years for myopic and perfect; for overnight, year of cost assumptions can be different and is defined under 'costs'
-  - 2020
-  - 2040
-  - 2050
+  - 2030
   # for example, set to
   # - 2020
   # - 2030
@@ -60,9 +58,9 @@ scenario:
   #- 500
   - 1500
   egs_mode: 
-  # - "dh" 
+  - "dh" 
   - "chp" 
-  #- "chp" 
+  - "elec" 
   # can be 'elec' for electricity only generation
   # can be 'chp' for electricity and district heat
   # can 'dh' for district heating only

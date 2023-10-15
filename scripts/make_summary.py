@@ -630,15 +630,12 @@ def calculate_price_statistics(n, label, price_statistics):
 
 def calculate_nodal_geothermal_stats(n, label, nodal_geothermal_stats):
 
-    print("received label: ", label)
     if "chp" in label:
         mode = "chp"
     elif "dh" in label:
         mode = "dh"
     elif "elec" in label:
         mode = "elec"
-    
-    print("Found mode: ", mode)
 
     generation_targets = {
         "dh": ["geothermal heat dh"],
@@ -648,7 +645,6 @@ def calculate_nodal_geothermal_stats(n, label, nodal_geothermal_stats):
     load_targets = {
         "dh": ["urban central heat"],
         "chp": ["urban central heat", "electricity", "AC"],
-        # "elec": ["electricity"],
         "elec": ["AC"],
     }
 
@@ -671,8 +667,6 @@ def calculate_nodal_geothermal_stats(n, label, nodal_geothermal_stats):
         return gt
 
     df = get_geothermal_capacity(n, mode)
-    print("received geothermal capacities")
-    print(df)
 
     buses = n.loads.loc[n.loads.carrier == "electricity"].index
     geothermal_buses = n.links.loc[n.links.carrier.isin(generation_targets[mode])].bus1.unique()
@@ -703,19 +697,16 @@ def calculate_nodal_geothermal_stats(n, label, nodal_geothermal_stats):
     total_gen = all_gens.groupby(all_gens.bus.str[:5]).sum()["total_gen"]
 
     df["geothermal generation share"] = geothermal_gen / total_gen
-    
+
     renewables = ["solar", "onwind", "offwind-dc", "offwind-ac"]
 
-    for renewable in renewables:
+    for carrier in renewables:
 
         gens = n.generators.loc[n.generators.carrier == carrier].bus
         caps = n.generators_t.p_max_pu[gens.index].mean()
         caps.index = caps.index.str[:5]
 
         df.loc[gens.tolist(), carrier] = caps
-
-    print("renewable capacity factors")
-    print(df.head())
 
     def get_dac_capacity(n):
 
