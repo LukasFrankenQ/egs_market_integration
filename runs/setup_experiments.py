@@ -8,13 +8,12 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-capex_list = [1000, 2000]
+capex_list = [1500]
 # mode_list = ["elec", "dh", "chp"]
-# mode_list = ["dh", "chp"]
-mode_list = ["elec"]
+mode_list = ["dh", "chp"]
 clusters = 72
 egs_op = "flex"
-investment_years = [2030]
+investment_years = [2050]
 dh_progresses = [0.25, 0.5, 0.75, 1.]
 
 security_lock = False
