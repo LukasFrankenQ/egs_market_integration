@@ -786,9 +786,9 @@ if __name__ == "__main__":
     logging.basicConfig(level=snakemake.config["logging"]["level"])
 
     networks_dict = {
-        (cluster, ll, opt + sector_opt, planning_horizon, egs_capex, egs_mode, egs_op): "results/"
+        (cluster, ll, opt + sector_opt, planning_horizon, egs_capex, egs_mode, egs_op, progress): "results/"
         + snakemake.params.RDIR
-        + f"/postnetworks/elec_s{simpl}_{cluster}_l{ll}_{opt}_{sector_opt}_{planning_horizon}_{egs_capex}_{egs_mode}_{egs_op}.nc"
+        + f"/postnetworks/elec_s{simpl}_{cluster}_l{ll}_{opt}_{sector_opt}_{planning_horizon}_{egs_capex}_{egs_mode}_{egs_op}_{progress}.nc"
         for simpl in snakemake.params.scenario["simpl"]
         for cluster in snakemake.params.scenario["clusters"]
         for opt in snakemake.params.scenario["opts"]
@@ -798,6 +798,7 @@ if __name__ == "__main__":
         for egs_capex in snakemake.params.scenario["egs_capex"]
         for egs_mode in snakemake.params.scenario["egs_mode"]
         for egs_op in snakemake.params.scenario["egs_op"]
+        for progress in snakemake.params.scenario["progress"]
     }
 
     Nyears = len(pd.date_range(freq="h", **snakemake.params.snapshots)) / 8760

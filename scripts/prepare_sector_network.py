@@ -2078,7 +2078,11 @@ def create_nodes_for_heat_sector():
     urban_fraction = pd.concat([urban_fraction, dist_fraction_node], axis=1).max(axis=1)
     # difference of max potential and today's share of district heating
     diff = (urban_fraction * central_fraction) - dist_fraction_node
-    progress = get(options["district_heating"]["progress"], investment_year)
+    # progress = get(options["district_heating"]["progress"], investment_year)
+
+    progress = float(snakemake.wildcards.progress)
+    logger.info(f"Use progress factor of {progress:.2%} from snakemake wildcards")
+
     dist_fraction_node += diff * progress
     logger.info(
         f"Increase district heating share by a progress factor of {progress:.2%} "
