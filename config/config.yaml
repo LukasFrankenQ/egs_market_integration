@@ -71,6 +71,8 @@ scenario:
   egs_op: # if flexible egs is allowed
   - "flex" # flexible operations switched OFF
   # - "flex" # flexible operations switched ON
+  progress:
+  - 0.5
 
 countries: ['AL', 'AT', 'BA', 'BE', 'BG', 'CH', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GB', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'ME', 'MK', 'NL', 'NO', 'PL', 'PT', 'RO', 'RS', 'SE', 'SI', 'SK']
 

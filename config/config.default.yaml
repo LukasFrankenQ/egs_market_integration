@@ -57,6 +57,25 @@ scenario:
   # - 2030
   # - 2040
   # - 2050
+  egs_capex:
+  #- 500
+  # - 1000
+  - 1500
+  # - 2000
+  # - 2500
+  # - 3000
+  egs_mode: 
+  # - "dh" 
+  - "dh" 
+  # - "elec" 
+  # can be 'elec' for electricity only generation
+  # can be 'chp' for electricity and district heat
+  # can 'dh' for district heating only
+  egs_op: # if flexible egs is allowed
+  - "flex" # flexible operations switched OFF
+  # - "flex" # flexible operations switched ON
+  progress:
+  - 0.5
   # for myopic foresight
 
 countries: ['AL', 'AT', 'BA', 'BE', 'BG', 'CH', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GB', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'ME', 'MK', 'NL', 'NO', 'PL', 'PT', 'RO', 'RS', 'SE', 'SI', 'SK']
