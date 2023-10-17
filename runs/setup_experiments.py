@@ -15,15 +15,19 @@ mode_list = ["elec"]
 clusters = 72
 egs_op = "flex"
 investment_years = [2030]
+dh_progresses = [0.25, 0.5, 0.75, 1.]
 
 security_lock = False
 
 root = Path("/exports/csce/eddie/eng/groups/energy-systems-group/projects/basic_egs/pypsa-eur")
-config_template = "config_{}_{}_{}_{}.yaml"
+config_template = "config_{}_{}_{}_{}_{}.yaml"
 
 if security_lock:
 	capex_list = capex_list[:1]
 	mode_list = mode_list[:1]
+	investement_years = investment_years[:1]
+	dh_progresses = dh_progresses[:1]
+
 	logger.warning("Security Lock is switched on, setting up only one experiment!")
 else:
 	logger.warning("Security Lock is switched off")
@@ -43,11 +47,11 @@ def retrieve_licence(lfile):
 			return current_lic
 
 
-def setup_config(rundir, investment_year, capex, mode, clusters, egs_op):
+def setup_config(rundir, investment_year, capex, mode, clusters, egs_op, progress):
 
 	config_base = root / "config" / "config.yaml"
 
-	config_target = rundir / config_template.format(investment_year, int(capex), mode, egs_op)
+	config_target = rundir / config_template.format(investment_year, int(capex), mode, egs_op, progress)
 
 	with open(config_base, "r") as f:
 		config = yaml.safe_load(f)
@@ -57,26 +61,27 @@ def setup_config(rundir, investment_year, capex, mode, clusters, egs_op):
 	config["scenario"]["egs_op"] = egs_op
 	config["scenario"]["clusters"] = clusters
 	config["scenario"]["planning_horizons"] = investment_year
+	config["scenario"]["progress"] = progress
 
 	logger.info(f"Storing resulting config as {config_target}.")
 	with open(config_target, "w") as f:
 		yaml.dump(config, f)
 
 
-def create_scripts(rundir, investment_year, capex, mode, egs_op):
+def create_scripts(rundir, investment_year, capex, mode, egs_op, progress):
 
 	main_fn = rundir / "main.sh"
 
 	facil_fn = rundir / "facil.exp"
 	get_licence_fn = rundir / "get_licence.sh"
 
-	config_file = rundir / config_template.format(investment_year, int(capex), mode, egs_op)
+	config_file = rundir / config_template.format(investment_year, int(capex), mode, egs_op, progress)
 
 	logger.info(f"Setting up main as {str(main_fn)}")
 
-	model_template = "results/basic_test/{}networks/elec_s_{}_lv1.0__Co2L0-3H-T-H-B-I-solar+p3-dist1_{}_{}_{}_{}.nc"
-	pre_model_name = model_template.format("pre", clusters, investment_year, capex, mode, egs_op)
-	post_model_name = model_template.format("post", clusters, investment_year, capex, mode, egs_op)
+	model_template = "results/basic_test/{}networks/elec_s_{}_lv1.0__Co2L0-3H-T-H-B-I-solar+p3-dist1_{}_{}_{}_{}_{}.nc"
+	pre_model_name = model_template.format("pre", clusters, investment_year, capex, mode, egs_op, progress)
+	post_model_name = model_template.format("post", clusters, investment_year, capex, mode, egs_op, progress)
 
 	# main_fn = "testmain.sh"
 	# facil_fn = "testfacil.exp"
@@ -154,20 +159,20 @@ def create_scripts(rundir, investment_year, capex, mode, egs_op):
 	os.system(f"chmod +x {get_licence_fn}")
 
 
-for capex, mode, investment_year in product(capex_list, mode_list, investment_years):
+for capex, mode, investment_year, progress in product(capex_list, mode_list, investment_years, dh_progresses):
 
-	rundir = root / "runs" / "run_data" / f"{mode}_{egs_op}_{int(clusters)}" / f"run_{int(capex)}_{investment_year}"
+	rundir = root / "runs" / "run_data" / f"{mode}_{egs_op}_{int(clusters)}" / f"run_{int(capex)}_{investment_year}_{progress}"
 	print(f"Setting up experiment in dir {str(rundir)}")
 
-	summary = f"CAPEX {capex}, mode {mode}, operation {egs_op}, investment year {investment_year}."
+	summary = f"CAPEX {capex}, mode {mode}, operation {egs_op}, investment year {investment_year}, {progress}."
 	try:
 
 		if rundir.is_file():
 			logger.warning(f"Rundir {str(rundir)} already exists.")
 		os.makedirs(rundir, exist_ok=True)
 
-		setup_config(rundir, investment_year, capex, mode, clusters, egs_op)
-		create_scripts(rundir, investment_year, capex, mode, egs_op)
+		setup_config(rundir, investment_year, capex, mode, clusters, egs_op, progress)
+		create_scripts(rundir, investment_year, capex, mode, egs_op, progress)
 
 		print(f"Created run! {summary}")
 
