@@ -8,13 +8,13 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-capex_list = [1500]
+capex_list = [3500, 4000]
 # mode_list = ["elec", "dh", "chp"]
-mode_list = ["dh", "chp"]
+mode_list = ["chp"]
 clusters = 72
-egs_op = "flex"
-investment_years = [2050]
-dh_progresses = [0.25, 0.5, 0.75, 1.]
+op_modes = ["static", "flex"]
+investment_years = [2030]
+dh_progresses = [0.3]
 
 security_lock = False
 
@@ -158,7 +158,7 @@ def create_scripts(rundir, investment_year, capex, mode, egs_op, progress):
 	os.system(f"chmod +x {get_licence_fn}")
 
 
-for capex, mode, investment_year, progress in product(capex_list, mode_list, investment_years, dh_progresses):
+for capex, mode, investment_year, egs_op, progress in product(capex_list, mode_list, investment_years, op_modes, dh_progresses):
 
 	rundir = root / "runs" / "run_data" / f"{mode}_{egs_op}_{int(clusters)}" / f"run_{int(capex)}_{investment_year}_{progress}"
 	print(f"Setting up experiment in dir {str(rundir)}")
