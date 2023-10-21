@@ -51,15 +51,15 @@ scenario:
   # - 2020
   # - 2030
   # - 2040
-  - 2050
+  - 2030
   # for myopic foresight
   egs_capex:
   #- 500
   # - 1000
   - 1500
-  # - 2000
-  # - 2500
-  # - 3000
+  - 2000
+  - 2500
+  - 3000
   egs_mode: 
   # - "dh" 
   - "chp" 
@@ -68,10 +68,10 @@ scenario:
   # can be 'chp' for electricity and district heat
   # can 'dh' for district heating only
   egs_op: # if flexible egs is allowed
-  - "flex" # flexible operations switched OFF
-  # - "flex" # flexible operations switched ON
+  - "static" # flexible operations switched OFF
+  - "flex" # flexible operations switched ON
   progress:
-  - 0.5
+  - 0.3
 
 countries: ['AL', 'AT', 'BA', 'BE', 'BG', 'CH', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GB', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'ME', 'MK', 'NL', 'NO', 'PL', 'PT', 'RO', 'RS', 'SE', 'SI', 'SK']
 
@@ -743,7 +743,7 @@ plotting:
   eu_node_location:
     x: -5.5
     y: 46.
-  costs_max: 1000
+  costs_max: 1600
   costs_threshold: 1
   energy_max: 20000
   energy_min: -20000
