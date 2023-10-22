@@ -49,13 +49,13 @@ scenario:
   planning_horizons: # investment years for myopic and perfect; for overnight, year of cost assumptions can be different and is defined under 'costs'
   # for example, set to
   # - 2020
-  # - 2030
-  # - 2040
   - 2030
+  # - 2040
+  # - 2050
   # for myopic foresight
   egs_capex:
   #- 500
-  # - 1000
+  - 1000
   - 1500
   - 2000
   - 2500
@@ -69,7 +69,7 @@ scenario:
   # can 'dh' for district heating only
   egs_op: # if flexible egs is allowed
   - "static" # flexible operations switched OFF
-  - "flex" # flexible operations switched ON
+  # - "flex" # flexible operations switched ON
   progress:
   - 0.3
 

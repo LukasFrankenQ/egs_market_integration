@@ -3405,6 +3405,7 @@ def add_sweep_egs(n, snakemake, costs):
 
     elif mode == "chp":
         logger.info("Adding EGS in mode 'chp'.")
+        logger.warning("Currently adds dh different in the chp case!")
 
         n.madd(
             "Link",

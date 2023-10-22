@@ -635,9 +635,9 @@ def extra_functionality(n, snapshots):
     print("wildcards in extra functionality")
     if "chp" in snakemake.wildcards:
         add_egs_chp_constraint(n)
-        print("the constraint was applied")
+        print("egs chp constraint was applied")
     else:
-        print("the constraint was not applied")
+        print("egs chp constraint was not applied")
 
 
 def solve_network(n, config, solving, opts="", **kwargs):
