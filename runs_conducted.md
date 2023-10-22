@@ -30,3 +30,10 @@ __chp__  -  __flex__  ----  0.25  - 0.5  -  0.75  -  1.
 
 __dh__  -  __flex__  ----  0.25  - 0.5  -  0.75  -  1. 
 -------------------  yea  -----  yes  ---  yes   ----   yes
+
+
+### TO DO for final runs!
+
+- Change investment year to 2050.
+- Create consistency in cost heat distribution network between chp and dh.
+- Double check cost of organic rankine cycle in config.
