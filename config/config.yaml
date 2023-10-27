@@ -850,6 +850,7 @@ plotting:
     OCGT-heat: '#e0986c'
     gas boiler: '#db6a25'
     gas boilers: '#db6a25'
+    gas heating: '#db6a25'
     gas boiler marginal: '#db6a25'
     residential rural gas boiler: '#d4722e'
     residential urban decentral gas boiler: '#cb7a36'
@@ -896,6 +897,7 @@ plotting:
     # biomass
     biogas: '#e3d37d'
     biomass: '#baa741'
+    biomass heating: '#baa741'
     solid biomass: '#baa741'
     solid biomass transport: '#baa741'
     solid biomass for industry: '#7a6d26'
@@ -925,6 +927,7 @@ plotting:
     agriculture electricity: '#494778'
     # battery + EVs
     battery: '#ace37f'
+    battery (dis)charging: '#ace37f'
     battery storage: '#ace37f'
     battery charger: '#88a75b'
     battery discharger: '#5d4e29'
@@ -938,6 +941,7 @@ plotting:
     Li ion: '#baf238'
     # hot water storage
     water tanks: '#e69487'
+    water tanks (dis)charging: '#e69487'
     residential rural water tanks: '#f7b7a3'
     services rural water tanks: '#f3afa3'
     residential urban decentral water tanks: '#f2b2a3'
