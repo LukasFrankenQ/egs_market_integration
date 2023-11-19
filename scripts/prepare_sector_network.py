@@ -3278,12 +3278,16 @@ def add_sweep_egs(n, snakemake, costs):
 
     injection_well_cost = annuity_factor * drilling_cost / 2.
     production_well_cost = annuity_factor * drilling_cost / 2.
-    # district_heating_cost = annuity_factor * config["sector"]["egs_district_heating_capex"]
-    orc_cost = (annuity_factor + orc_fom) * config["sector"]["egs_orc_capex"]
 
-    dh_maxcost = annuity_factor * config["sector"]["egs_district_heating_max_cost"]
-    dh_steps = config["sector"]["egs_district_heating_cost_steps"]
-    dh_costrange = np.linspace(0, dh_maxcost, dh_steps)
+    orc_fom = costs.at["organic rankine cycle", "FOM"] * 1e-2
+    orc_capex = costs.at["organic rankine cycle", "investment"]
+
+    egs_cf = config["sector"]["egs_avg_capacity_factor"]
+
+    orc_cost = (annuity_factor + orc_fom) * orc_capex
+
+    logger.info(f"Assuming ORC cost {orc_cost:.2f} Euro/MW")
+    logger.info(f"Computed from Capex {orc_capex:.2f} Euro/kW and FOM {orc_fom:.2f} %")
 
     eta_el = config["sector"]["egs_efficiency_electricity"]
     eta_dh = config["sector"]["egs_efficiency_district_heating"]
@@ -3327,8 +3331,9 @@ def add_sweep_egs(n, snakemake, costs):
         bus1=nodes + " geothermal reservoir bus",
         location=nodes,
         capital_cost=injection_well_cost,
+        efficiency=egs_cf**0.5,
         p_nom_extendable=True,
-        carrier="geothermal heat",
+        carrier="injection geothermal heat",
     )
 
     if (egs_op := snakemake.wildcards.egs_op) == "flex":
@@ -3365,9 +3370,10 @@ def add_sweep_egs(n, snakemake, costs):
         bus0=nodes + " geothermal reservoir bus",
         bus1=nodes + " geothermal surface bus",
         location=nodes,
+        efficiency=egs_cf**0.5,
         capital_cost=production_well_cost,
         p_nom_extendable=True,
-        carrier="geothermal heat",
+        carrier="production geothermal heat",
     )
 
 
@@ -3429,7 +3435,7 @@ def add_sweep_egs(n, snakemake, costs):
             location=nodes,
             capital_cost=orc_cost * 0.25 * eta_el,
             p_nom_extendable=True,
-            carrier="geothermal heat chp district heat",
+            carrier="geothermal heat chp dh",
         )
 
         """
@@ -3448,7 +3454,6 @@ def add_sweep_egs(n, snakemake, costs):
             carrier="geothermal heat chp",
         )
         """
-
 
 
 if __name__ == "__main__":

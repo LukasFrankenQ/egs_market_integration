@@ -38,3 +38,5 @@ __dh__  -  __flex__  ----  0.0 - 0.25  - 0.5  -  0.75  -  1.
 - Create consistency in cost heat distribution network between chp and dh.
 - Double check cost of organic rankine cycle in config.
 - Double check max hours of storage
+- differentiate carrier between injection and production
+- static capacity factors for generation?
