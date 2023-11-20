@@ -28,7 +28,7 @@ scenario:
   opts: # only relevant for PyPSA-Eur
   - ''
   sector_opts: # this is where the main scenario settings are
-  - Co2L0-3H-T-H-B-I-solar+p3-dist1 # recommended to include I, B, definitely B, ideally also I, potential solution, subtract industry demand to not overestimate biomass supply
+  - Co2L0-180H-T-H-B-I-solar+p3-dist1 # recommended to include I, B, definitely B, ideally also I, potential solution, subtract industry demand to not overestimate biomass supply
 
   # to really understand the options here, look in scripts/prepare_sector_network.py
   # Co2Lx specifies the CO2 target in x% of the 1990 values; default will give default (5%);
@@ -53,27 +53,24 @@ scenario:
   egs_capex:
   # - 500
   # - 1000
-  # - 1500
-  - 2000
-  - 2500
-  - 3000
+  - 1500
   # - 3500
-  - 4000
-  - 5000
-  - 6000
+  # - 4000
+  # - 5000
+  # - 6000
   # - 7000
   # - 8000
   # - 9000
   egs_mode: 
-  - "dh" 
-  # - "chp" 
+  # - "dh" 
+  - "chp" 
   # - "elec" 
   # can be 'elec' for electricity only generation
   # can be 'chp' for electricity and district heat
   # can 'dh' for district heating only
   egs_op: # if flexible egs is allowed
   - "static" # flexible operations switched OFF
-  - "flex" # flexible operations switched ON
+  # - "flex" # flexible operations switched ON
   progress:
   # - 0.0
   - 0.3

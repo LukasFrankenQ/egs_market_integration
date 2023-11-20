@@ -3644,4 +3644,5 @@ if __name__ == "__main__":
 
     sanitize_carriers(n, snakemake.config)
 
+    n.links.to_csv('links_pre_lopf.csv')
     n.export_to_netcdf(snakemake.output[0])
