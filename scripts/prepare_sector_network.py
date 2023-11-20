@@ -3279,8 +3279,10 @@ def add_sweep_egs(n, snakemake, costs):
     injection_well_cost = annuity_factor * drilling_cost / 2.
     production_well_cost = annuity_factor * drilling_cost / 2.
 
-    orc_fom = costs.at["organic rankine cycle", "FOM"] * 1e-2
-    orc_capex = costs.at["organic rankine cycle", "investment"]
+    # orc_fom = costs.at["organic rankine cycle", "FOM"] * 1e-2
+    # orc_capex = costs.at["organic rankine cycle", "investment"]
+    orc_fom = snakemake.config['sector']['egs_orc_FOM']
+    orc_capex = snakemake.config['sector']['egs_orc_capex']
 
     egs_cf = config["sector"]["egs_avg_capacity_factor"]
 
