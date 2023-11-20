@@ -40,3 +40,12 @@ __dh__  -  __flex__  ----  0.0 - 0.25  - 0.5  -  0.75  -  1.
 - Double check max hours of storage
 - differentiate carrier between injection and production
 - static capacity factors for generation?
+
+
+###### On the cluster
+
+to get medium fast exclude nodes 1f01, 1f02, 1j01
+to get fast fast also exclude 1C19, 3c06, 3c05
+
+example
+- qsub -N ELST1000 -l h_vmem=64G -l h_rt=47:59:59 -l h=!(node1f01|node1f02|node1j01) ./main.sh
