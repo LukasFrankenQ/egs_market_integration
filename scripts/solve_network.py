@@ -647,11 +647,12 @@ def extra_functionality(n, snapshots):
     add_pipe_retrofit_constraint(n)
     add_egs_constraint(n)
     print("wildcards in extra functionality")
-    if "chp" in snakemake.wildcards:
-        add_egs_chp_constraint(n)
-        print("egs chp constraint was applied")
-    else:
-        print("egs chp constraint was not applied")
+    # if "chp" in snakemake.wildcards:
+    # add_egs_chp_constraint(n)
+    # print("egs chp constraint was applied")
+    #     pass
+    # else:
+    print("egs chp constraint was not applied due to multilink implementation")
 
 
 def solve_network(n, config, solving, opts="", **kwargs):
