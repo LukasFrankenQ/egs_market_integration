@@ -3447,7 +3447,7 @@ def add_sweep_egs(n, snakemake, costs):
             # bus1=nodes,
             # bus2=nodes + " urban central heat",
             efficiency=eta_el,
-            efficiency2=eta_dh,
+            efficiency2=eta_dh*(1-eta_el),
             location=nodes,
             capital_cost=orc_cost * 1.25 * eta_el,
             p_nom_extendable=True,
@@ -3465,7 +3465,7 @@ def add_sweep_egs(n, snakemake, costs):
             location=nodes,
             efficiency=1.,
             carrier=" geothermal elec dump to elec",
-            )
+        )
 
         n.madd(
             "Link",
@@ -3478,7 +3478,7 @@ def add_sweep_egs(n, snakemake, costs):
             location=nodes,
             efficiency=1.,
             carrier=" geothermal elec dump to elec",
-            )
+        )
 
         """
         n.madd(

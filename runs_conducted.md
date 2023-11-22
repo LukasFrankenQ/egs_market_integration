@@ -40,6 +40,12 @@ __dh__  -  __flex__  ----  0.0 - 0.25  - 0.5  -  0.75  -  1.
 - Double check max hours of storage
 - differentiate carrier between injection and production
 - static capacity factors for generation?
+- respect cascading of efficiency in the dh case
+
+
+### Ideas jotted down
+
+- Plot for CHP operation, where on the heat-elec diagram plant was operated
 
 
 ###### On the cluster
