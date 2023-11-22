@@ -8,11 +8,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-capex_list = [100, 250, 500, 750, 1000]
+capex_list = [1000]
 # mode_list = ["elec", "dh", "chp"]
-mode_list = ["elec"]
+mode_list = ["chp"]
 clusters = 72
-op_modes = ["static"]
+op_modes = ["flex"]
 investment_years = [2050]
 dh_progresses = [0.3]
 
