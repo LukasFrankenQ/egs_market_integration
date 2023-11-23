@@ -3284,8 +3284,6 @@ def add_sweep_egs(n, snakemake, costs):
     orc_fom = snakemake.config['sector']['egs_orc_FOM']
     orc_capex = snakemake.config['sector']['egs_orc_capex']
 
-    egs_cf = config["sector"]["egs_avg_capacity_factor"]
-
     orc_cost = (annuity_factor + orc_fom) * orc_capex
 
     logger.info(f"Assuming ORC cost {orc_cost:.2f} Euro/MW")
@@ -3293,6 +3291,11 @@ def add_sweep_egs(n, snakemake, costs):
 
     eta_el = config["sector"]["egs_efficiency_electricity"]
     eta_dh = config["sector"]["egs_efficiency_district_heating"]
+
+    # egs_cf = config["sector"]["egs_avg_capacity_factor"]
+    egs_cf = pd.read_csv(
+            snakemake.input.egs_capacity_factors, parse_dates=True, index_col=0
+        )
 
     logger.info(f"electric efficiency: {eta_el}")
     logger.info(f"district heating efficiency: {eta_dh}")
@@ -3333,7 +3336,7 @@ def add_sweep_egs(n, snakemake, costs):
         bus1=nodes + " geothermal reservoir bus",
         location=nodes,
         capital_cost=injection_well_cost,
-        efficiency=egs_cf**0.5,
+        efficiency=egs_cf,
         p_nom_extendable=True,
         carrier="injection geothermal heat",
     )
@@ -3372,7 +3375,6 @@ def add_sweep_egs(n, snakemake, costs):
         bus0=nodes + " geothermal reservoir bus",
         bus1=nodes + " geothermal surface bus",
         location=nodes,
-        efficiency=egs_cf**0.5,
         capital_cost=production_well_cost,
         p_nom_extendable=True,
         carrier="production geothermal heat",
@@ -3415,35 +3417,15 @@ def add_sweep_egs(n, snakemake, costs):
         logger.info("Adding EGS in mode 'chp'.")
         logger.warning("Currently adds dh different in the chp case!")
 
-        def add_dump(n, vector):
-
-            n.madd(
-                "Bus",
-                nodes,
-                suffix=f" geothermal {vector} dump",
-                carrier=f"geothermal {vector} dump",
-            )
-
-            n.madd(
-                "StorageUnit",
-                nodes + f" geothermal {vector} dump",
-                carrier=f"geothermal {vector} dump",
-                bus=nodes + f" geothermal {vector} dump",
-                capital_cost=0.,
-                p_nom_extendable=True,
-                p_max_pu=0.,
-            )
-
-        add_dump(n, "dh")
-        add_dump(n, "elec")
-
         n.madd(
             "Link",
             nodes,
             suffix=f" geothermal chp",
             bus0=nodes + " geothermal surface bus",
-            bus1=nodes + " geothermal elec dump",
-            bus2=nodes + " geothermal dh dump",
+            bus1=nodes,
+            # bus1=nodes + " geothermal elec dump",
+            # bus2=nodes + " geothermal dh dump",
+            bus2=nodes + " urban central heat",
             # bus1=nodes,
             # bus2=nodes + " urban central heat",
             efficiency=eta_el,
@@ -3471,7 +3453,6 @@ def add_sweep_egs(n, snakemake, costs):
             "Link",
             nodes + " geothermal dh dump to elec",
             bus0=nodes + f" geothermal dh dump",
-            bus1=nodes + " urban central heat",
             p_nom=0.,
             p_nom_extendable=True,
             capital_cost=0.,

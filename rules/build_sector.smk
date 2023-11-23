@@ -704,6 +704,25 @@ rule build_transport_demand:
         "../scripts/build_transport_demand.py"
 
 
+rule build_egs_efficiencies:
+    params:
+        snapshots=config["snapshots"],
+    input:
+        regions=RESOURCES + "regions_onshore_elec_s{simpl}_{clusters}.geojson",
+        air_temperature=RESOURCES + "temp_air_total_elec_s{simpl}_{clusters}.nc"
+    output:
+        egs_efficiencies=RESOURCES + "egs_efficiencies_s{simpl}_{clusters}.csv",
+    threads: 1
+    resources:
+        mem_mb=2000,
+    log:
+        LOGS + "build_egs_efficiencies_s{simpl}_{clusters}.log",
+    conda:
+        "../envs/environment.yaml"
+    script:
+        "../scripts/build_egs_efficiencies.py"
+
+
 rule prepare_sector_network:
     params:
         co2_budget=config["co2_budget"],

@@ -41,6 +41,7 @@ __dh__  -  __flex__  ----  0.0 - 0.25  - 0.5  -  0.75  -  1.
 - differentiate carrier between injection and production
 - static capacity factors for generation?
 - respect cascading of efficiency in the dh case
+- should max_hours be adapted for 3h timesteps?
 
 
 ### Ideas jotted down
