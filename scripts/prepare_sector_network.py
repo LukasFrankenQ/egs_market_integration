@@ -3445,11 +3445,10 @@ def add_sweep_egs(n, snakemake, costs):
             nodes + " geothermal chp elec",
             bus0=nodes + f" geothermal surface",
             bus1=nodes,
-            p_nom=0.,
             p_nom_extendable=True,
-            capital_cost=0.,
+            capital_cost=orc_cost * eta_el,
             location=nodes,
-            efficiency=1.,
+            efficiency=eta_el,
             carrier=" geothermal elec dump to elec",
         )
 
@@ -3458,11 +3457,10 @@ def add_sweep_egs(n, snakemake, costs):
             nodes + " geothermal chp dh",
             bus0=nodes + " geothermal surface",
             bus1=nodes + " urban central heat",
-            p_nom=0.,
             p_nom_extendable=True,
-            capital_cost=0.,
+            capital_cost=0.25 * orc_cost * eta_dh,
             location=nodes,
-            efficiency=1.,
+            efficiency=eta_dh,
             carrier=" geothermal elec dump to elec",
         )
 
