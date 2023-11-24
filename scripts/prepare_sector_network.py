@@ -3296,7 +3296,7 @@ def add_sweep_egs(n, snakemake, costs):
 
     # egs_cf = config["sector"]["egs_avg_capacity_factor"]
     egs_cf = pd.read_csv(
-            snakemake.input.egs_capacity_factors, parse_dates=True, index_col=0
+            snakemake.input.egs_efficiencies, parse_dates=True, index_col=0
         )
 
     logger.info(f"electric efficiency: {eta_el}")
@@ -3334,7 +3334,7 @@ def add_sweep_egs(n, snakemake, costs):
         "Link",
         nodes,
         suffix=" geothermal injection well",
-        bus0="EU geothermal heat bus",
+        bus0="EU geothermal heat",
         bus1=nodes + " geothermal reservoir",
         location=nodes,
         capital_cost=injection_well_cost,
