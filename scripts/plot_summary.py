@@ -160,7 +160,6 @@ def plot_costs():
     new_columns = df.sum().sort_values().index
 
     fig, ax = plt.subplots(figsize=(12, 8))
-
     df.loc[new_index, new_columns].T.plot(
         kind="bar",
         ax=ax,

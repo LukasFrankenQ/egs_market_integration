@@ -637,9 +637,15 @@ def calculate_nodal_geothermal_stats(n, label, nodal_geothermal_stats):
     elif "elec" in label:
         mode = "elec"
 
+    mask = (n.links.carrier == " geothermal elec dump to elec") & (n.links.bus1.str.contains('urban central'))
+    n.links.loc[mask, "carrier"] = "geothermal heat chp dh"
+
+    mask = n.links.carrier == " geothermal elec dump to elec"
+    n.links.loc[mask, "carrier"] = "geothermal heat chp elec"
+
     generation_targets = {
         "dh": ["geothermal heat dh"],
-        "chp": ["geothermal heat chp district heat", "geothermal heat chp elec"],
+        "chp": ["geothermal heat chp elec", "geothermal heat chp elec"],
         "elec": ["geothermal heat elec"],
     }
     load_targets = {
@@ -647,6 +653,8 @@ def calculate_nodal_geothermal_stats(n, label, nodal_geothermal_stats):
         "chp": ["urban central heat", "electricity", "AC"],
         "elec": ["AC"],
     }
+    mask = (n.links.carrier == " geothermal elec dump to elec") & (n.links.bus1.str.contains('urban central'))
+    n.links.loc[mask, "carrier"] = " geothermal elec dump to dh"
 
     def get_geothermal_capacity(n, mode):
 
@@ -723,6 +731,8 @@ def calculate_nodal_geothermal_stats(n, label, nodal_geothermal_stats):
     nodal_geothermal_stats[label] = df
 
     nodal_geothermal_stats = nodal_geothermal_stats.reindex(df.index.union(nodal_geothermal_stats.index))
+
+
     nodal_geothermal_stats.loc[df.index, label] = df
 
     return nodal_geothermal_stats

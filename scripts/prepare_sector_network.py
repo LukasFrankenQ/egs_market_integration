@@ -3419,27 +3419,6 @@ def add_sweep_egs(n, snakemake, costs):
         logger.info("Adding EGS in mode 'chp'.")
         logger.warning("Currently adds dh different in the chp case!")
 
-        """
-        n.madd(
-            "Link",
-            nodes,
-            suffix=f" geothermal chp",
-            bus0=nodes + " geothermal surface bus",
-            bus1=nodes,
-            # bus1=nodes + " geothermal elec dump",
-            # bus2=nodes + " geothermal dh dump",
-            bus2=nodes + " urban central heat",
-            # bus1=nodes,
-            # bus2=nodes + " urban central heat",
-            efficiency=eta_el,
-            efficiency2=eta_dh*(1-eta_el),
-            location=nodes,
-            capital_cost=orc_cost * 1.25 * eta_el,
-            p_nom_extendable=True,
-            carrier="geothermal heat chp",
-        )
-        """
-
         n.madd(
             "Link",
             nodes + " geothermal chp elec",
@@ -3449,7 +3428,7 @@ def add_sweep_egs(n, snakemake, costs):
             capital_cost=orc_cost * eta_el,
             location=nodes,
             efficiency=eta_el,
-            carrier=" geothermal elec dump to elec",
+            carrier="geothermal heat chp elec",
         )
 
         n.madd(
@@ -3461,7 +3440,7 @@ def add_sweep_egs(n, snakemake, costs):
             capital_cost=0.25 * orc_cost * eta_dh,
             location=nodes,
             efficiency=eta_dh,
-            carrier=" geothermal elec dump to elec",
+            carrier="geothermal heat chp dh",
         )
 
         """

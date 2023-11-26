@@ -71,6 +71,8 @@ def plot_map(
     with_legend=True,
 ):
     tech_colors = snakemake.params.plotting["tech_colors"]
+    if "geothermal elec dump to elec" in tech_colors:
+        tech_colors[" geothermal elec dump to elec"] = tech_colors["geothermal elec dump to elec"]
 
     n = network.copy()
     assign_location(n)
