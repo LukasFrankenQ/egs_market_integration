@@ -41,12 +41,14 @@ __dh__  -  __flex__  ----  0.0 - 0.25  - 0.5  -  0.75  -  1.
 - differentiate carrier between injection and production
 - static capacity factors for generation?
 - respect cascading of efficiency in the dh case
-- should max_hours be adapted for 3h timesteps?
+- should max_hours be adapted for 3h timesteps?\
+- due to 125 generation capacity during discharge, should all cost be at injection well?
 
 
 ### Ideas jotted down
 
 - Plot for CHP operation, where on the heat-elec diagram plant was operated
+- Plot capacity change induced by flexible operation, versus change in energy provided by flexible operation.
 
 
 ###### On the cluster
