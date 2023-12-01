@@ -3268,9 +3268,12 @@ def add_sweep_egs(n, snakemake, costs):
 
     dr = config["costs"]["fill_values"]["discount rate"]
     lt = costs.at["geothermal", "lifetime"]
+
+    logger.info(f"Using geothermal lifetime {lt} years.")
     annuity_factor = annuity(lt, r=dr)
 
     orc_fom = config["sector"]["egs_orc_FOM"]
+    logger.info(f"Using ORC FOM {orc_fom} %.")
 
     # annuitizing costs
     drilling_cost = float(snakemake.wildcards.egs_capex) * 1000  # Euro/kW -> Euro/MW
@@ -3294,11 +3297,12 @@ def add_sweep_egs(n, snakemake, costs):
     eta_el = config["sector"]["egs_efficiency_electricity"]
     eta_dh = config["sector"]["egs_efficiency_district_heating"]
 
+    logger.info(f"Using geothermal efficiency {eta_el} for electricity and {eta_dh} for district heating.")
+
     # egs_cf = config["sector"]["egs_avg_capacity_factor"]
     egs_cf = pd.read_csv(
             snakemake.input.egs_efficiencies, parse_dates=True, index_col=0
         )
-
     logger.info(f"electric efficiency: {eta_el}")
     logger.info(f"district heating efficiency: {eta_dh}")
 
@@ -3308,7 +3312,7 @@ def add_sweep_egs(n, snakemake, costs):
         carrier="geothermal heat",
         unit="MWh_th",
         location="EU",
-        )
+    )
 
     n.add(
         "Generator",
@@ -3328,7 +3332,7 @@ def add_sweep_egs(n, snakemake, costs):
         carrier="geothermal heat",
         unit="MWh_th",
         location=nodes,
-        )
+    )
 
     n.madd(
         "Link",

@@ -43,6 +43,7 @@ __dh__  -  __flex__  ----  0.0 - 0.25  - 0.5  -  0.75  -  1.
 - respect cascading of efficiency in the dh case
 - should max_hours be adapted for 3h timesteps?\
 - due to 125 generation capacity during discharge, should all cost be at injection well?
+- Fischer Tropsch aus sensitivity?
 
 
 ### Ideas jotted down

@@ -542,23 +542,21 @@ sector:
   egs_elec: true # allow electricity generation through enhanced geothermal systems
   egs_dh: false # allow district heat generation through enhanced geothermal systems
   # egs_fixed_capital_cost: 5000 
-  egs_dh_fixed_capital_cost: None 
-  flexible_egs: false
-  egs_fault_distance : 0. # km
-  egs_capacity_variation: false
-  egs_performant: true # if true, only adds the cheapest egs plant per region
-  egs_potential_run: false
+  # egs_dh_fixed_capital_cost: None 
+  # egs_fault_distance : 0. # km
+  # egs_capacity_variation: false
+  # egs_performant: true # if true, only adds the cheapest egs plant per region
+  # egs_potential_run: false
 
   egs_sweep_run: true
-  egs_orc_capex: 1_500_000 # Euro/MW, taken from Aghahosseini et al., converted to Euro
+  egs_orc_capex: 1_500_000 # Euro/MW, taken from Aghahosseini et al., converted to Euro, adjusted to other research figures
   egs_storage_max_hours: 24 # hours (Ricks et al. 2023 (The Role of Flexible Geothermal...))
 
-  egs_avg_capacity_factor: 0.93 # average capacity factor of egs plants (Ricks et al. 2023 (The Role of Flexible Geothermal...))
-
+  # egs_avg_capacity_factor: 0.93 # average capacity factor of egs plants (Ricks et al. 2023 (The Role of Flexible Geothermal...))
   egs_orc_FOM: 0.02 # fraction of CAPEX Aghahosseini et al.
   
-  egs_efficiency_electricity: 0.12
-  egs_efficiency_district_heating: 0.8
+  egs_efficiency_electricity: 0.12      # data driven efficiency of organic rankine cycle for approx 150 degrees Celsius
+  egs_efficiency_district_heating: 0.95 # heat exchanger efficiency
 
 
 industry:
