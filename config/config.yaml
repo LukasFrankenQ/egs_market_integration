@@ -53,18 +53,18 @@ scenario:
   egs_capex:
   # - 500
   # - 1000
-  - 1500
-  #  - 2500
+  # - 1500
+  - 2000
   # - 3500
   - 3000
-  # - 4000
+  - 4000
   # - 5000
   # - 6000
   # - 7000
   # - 8000
   # - 9000
   egs_mode: 
-  # - "dh" 
+  - "dh" 
   - "chp" 
   # - "elec" 
   # can be 'elec' for electricity only generation
@@ -72,14 +72,14 @@ scenario:
   # can 'dh' for district heating only
   egs_op: # if flexible egs is allowed
   - "static" # flexible operations switched OFF
-  # - "flex" # flexible operations switched ON
+  - "flex" # flexible operations switched ON
   progress:
-  - 0.0
-  # - 0.3
+  # - 0.0
+  - 0.3
   # - 0.25
-  - 0.5
+  # - 0.5
   # - 0.75
-  - 1.0
+  # - 1.0
 
 countries: ['AL', 'AT', 'BA', 'BE', 'BG', 'CH', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GB', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'ME', 'MK', 'NL', 'NO', 'PL', 'PT', 'RO', 'RS', 'SE', 'SI', 'SK']
 
