@@ -51,20 +51,25 @@ scenario:
   - 2050
   # for myopic foresight
   egs_capex:
+  # - 100
+  # - 250
   # - 500
+  #- 750
   # - 1000
   # - 1500
-  - 2000
+  # - 2000
   # - 3500
   - 3000
   - 4000
-  # - 5000
-  # - 6000
+  # - 4500
+  - 5000
+  - 5500
+  - 6000
   # - 7000
   # - 8000
   # - 9000
   egs_mode: 
-  - "dh" 
+  # - "dh" 
   - "chp" 
   # - "elec" 
   # can be 'elec' for electricity only generation
