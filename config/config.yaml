@@ -548,10 +548,7 @@ sector:
   egs_dh: false # allow district heat generation through enhanced geothermal systems
   # egs_fixed_capital_cost: 5000 
   # egs_dh_fixed_capital_cost: None 
-  # egs_fault_distance : 0. # km
-  # egs_capacity_variation: false
   # egs_performant: true # if true, only adds the cheapest egs plant per region
-  # egs_potential_run: false
 
   egs_sweep_run: true
   egs_orc_capex: 1_500_000 # Euro/MW, taken from Aghahosseini et al., converted to Euro, adjusted to other research figures
