@@ -759,7 +759,7 @@ def make_summaries(networks_dict):
     ]
 
     columns = pd.MultiIndex.from_tuples(
-        networks_dict.keys(), names=["cluster", "ll", "opt", "planning_horizon", "egs_capex", "egs_mode", "egs_op", "progress"]
+        networks_dict.keys(), names=["cluster", "ll", "opt", "planning_horizon", "egs_capex", "egs_mode", "egs_op", "progress", "use_waste_heat"]
     )
 
     df = {}
@@ -796,7 +796,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=snakemake.config["logging"]["level"])
 
     networks_dict = {
-        (cluster, ll, opt + sector_opt, planning_horizon, egs_capex, egs_mode, egs_op, progress): "results/"
+        (cluster, ll, opt + sector_opt, planning_horizon, egs_capex, egs_mode, egs_op, progress, use_waste_heat): "results/"
         + snakemake.params.RDIR
         + f"/postnetworks/elec_s{simpl}_{cluster}_l{ll}_{opt}_{sector_opt}_{planning_horizon}_{egs_capex}_{egs_mode}_{egs_op}_{progress}.nc"
         for simpl in snakemake.params.scenario["simpl"]
@@ -809,6 +809,7 @@ if __name__ == "__main__":
         for egs_mode in snakemake.params.scenario["egs_mode"]
         for egs_op in snakemake.params.scenario["egs_op"]
         for progress in snakemake.params.scenario["progress"]
+        for use_waste_heat in snakemake.params.scenario["use_waste_heat"]
     }
 
     Nyears = len(pd.date_range(freq="h", **snakemake.params.snapshots)) / 8760

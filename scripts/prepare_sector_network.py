@@ -3569,7 +3569,8 @@ if __name__ == "__main__":
         add_industry(n, costs)
 
     if "I" in opts and "H" in opts:
-        add_waste_heat(n)
+        if snakemake.wildcards["use_waste_heat"]:
+            add_waste_heat(n)
 
     if "A" in opts:  # requires H and I
         add_agriculture(n, costs)
