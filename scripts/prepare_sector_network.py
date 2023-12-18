@@ -3570,7 +3570,7 @@ if __name__ == "__main__":
 
     if "I" in opts and "H" in opts:
 
-        if bool(snakemake.wildcards["use_waste_heat"]):
+        if snakemake.wildcards["use_waste_heat"] == "True":
             add_waste_heat(n)
 
     if "A" in opts:  # requires H and I
