@@ -8,11 +8,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-capex_list = [1400, 1500, 1600]
+capex_list = [1750]
 # mode_list = ["elec", "dh", "chp"]
 mode_list = ["elec"]
 clusters = 72
-op_modes = ["flex", "static"]
+op_modes = ["static"]
 investment_years = [2050]
 dh_progresses = [0.3]
 use_waste_heats = [True, False]
@@ -29,14 +29,14 @@ if security_lock:
 	dh_progresses = dh_progresses[:1]
 	use_waste_heats = use_waste_heats[:1]
 
-	logger.warning("Security Lock is switched on, setting up only one experiment!")
+	logger.warning("Security lock is switched on, setting up only one experiment!")
 else:
-	logger.warning("Security Lock is switched off")
+	logger.warning("Security lock is switched off")
 
 def retrieve_licence(lfile):
 	lic = pd.read_csv(lfile, index_col=0)
 
-	assert not lic.used.all(), "All Licences in licence storage are used up!"
+	assert not lic.used.all(), "All licences in licence storage are used up!"
 
 	for i, row in lic.iterrows():
 		if not row.used:

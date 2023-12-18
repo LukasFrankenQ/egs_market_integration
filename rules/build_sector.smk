@@ -800,17 +800,17 @@ rule prepare_sector_network:
         else [],
     output:
         RESULTS
-        + "prenetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}_{progress}.nc",
+        + "prenetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}_{progress}_{use_waste_heat}.nc",
     threads: 1
     resources:
         mem_mb=2000,
     log:
         LOGS
-        + "prepare_sector_network_elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}_{progress}.log",
+        + "prepare_sector_network_elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}_{progress}_{use_waste_heat}.log",
     benchmark:
         (
             BENCHMARKS
-            + "prepare_sector_network/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}_{progress}"
+            + "prepare_sector_network/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}_{progress}_{use_waste_heat}"
         )
     conda:
         "../envs/environment.yaml"

@@ -14,20 +14,20 @@ rule solve_sector_network:
     input:
         overrides="data/override_component_attrs",
         network=RESULTS
-        + "prenetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}_{progress}.nc",
+        + "prenetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}_{progress}_{use_waste_heat}.nc",
         costs="data/costs_{}.csv".format(config["costs"]["year"]),
         config=RESULTS + "config/config.yaml",
         #env=RDIR + 'config/environment.yaml',
     output:
         RESULTS
-        + "postnetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}_{progress}.nc",
+        + "postnetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}_{progress}_{use_waste_heat}.nc",
     shadow:
         "shallow"
     log:
         solver=LOGS
-        + "elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}_{progress}_solver.log",
+        + "elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}_{progress}_{use_waste_heat}_solver.log",
         python=LOGS
-        + "elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}_{progress}_python.log",
+        + "elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}_{progress}_{use_waste_heat}_python.log",
     threads: config["solving"]["solver"].get("threads", 4)
     resources:
         mem_mb=config["solving"]["mem"],
@@ -35,7 +35,7 @@ rule solve_sector_network:
         (
             RESULTS
             + BENCHMARKS
-            + "solve_sector_network/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}_{progress}"
+            + "solve_sector_network/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}_{egs_capex}_{egs_mode}_{egs_op}_{progress}_{use_waste_heat}"
         )
     conda:
         "../envs/environment.yaml"

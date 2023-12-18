@@ -546,7 +546,7 @@ if __name__ == "__main__":
 
     logging.basicConfig(level=snakemake.config["logging"]["level"])
 
-    n_header = 8
+    n_header = 9
 
     plot_costs()
 
