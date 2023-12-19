@@ -8,7 +8,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-capex_list = [1750]
+capex_list = [1000]
 # mode_list = ["elec", "dh", "chp"]
 mode_list = ["elec"]
 clusters = 72
