@@ -21,6 +21,45 @@ __dh__  -  __flex__  ------  1000  -  1500  -  2000  -  2500  -  3000 - 4000 - 5
 -------------------  no  -----  yes  ---  yes   ---   yes  --- yes --- yes --- yes --- yes
 
 
+- todo:
+
+- chp static and flex for 1000 euro/kw
+- chp flex for 4500 euro/kW
+
+
+##### Sensitity Analyses
+
+###### district heating progress
+
+- Static is default
+
+- progresses 0.0, 0.25, 0.5, 0.75, 1.
+
+__elec__ - 1000 (running, running, running, running, running)
+__chp__ - 4000 (running, running, running, running, running)
+__dh__ - 4000 (running, running, running, running, running)
+
+
+
+###### Using waste heat
+
+- done
+
+__elec__ - 1000 (True, False)
+__chp__ - 4000 (True, False)
+__dh__ - 4000 (True, False)
+
+
+
+###### Transmission level capacity expansion
+
+- all running
+
+__elec__ - 1000 (1.0, 1.125, 1.25)
+__chp__ - 4000 (1.0, 1.125, 1.25)
+__dh__ - 4000 (1.0, 1.125, 1.25)
+
+
 
 #### 72 clusters, 2050, dh progress sensitivity
 
