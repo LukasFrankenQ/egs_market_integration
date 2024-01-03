@@ -5,16 +5,18 @@ import logging
 logger = logging.getLogger(__name__)
 
 licenses = [
-	"grbgetkey 3b68259c-2742-411f-8a48-81169c3fe40c",
-	"grbgetkey cde7d92b-f4ad-4766-a12b-b404d0c5bb0c",
-	"grbgetkey a7f13fab-001a-4ae1-9220-a7f8ebc5b456",
-	"grbgetkey 30001c26-88f2-11ed-84fc-0242ac120002",
-	"grbgetkey aa1cc64c-67d4-4da1-a083-0423d03e1783",
-	"grbgetkey f3d10857-317c-4254-b6a9-68caa8cb1c60",
-	"grbgetkey 32454719-c8c9-4073-a7d5-e42b8da1e3cc",
-	"grbgetkey c7d7e681-5f30-46aa-9640-05018b930b4e",
-	"grbgetkey b9b9e96a-ba8c-49a3-ad2a-91b9e3034f39",
-	"grbgetkey 67a0f9b4-5ee8-4b6b-bc18-64aac828e097",
+    "grbgetkey 29586845-df26-4d11-9514-1446b0500048",
+	"grbgetkey fc8ca1df-7de2-4f10-bfa1-e7cc69076bc5",
+	"grbgetkey c9b83b6a-2ea8-4030-a384-4ea5bf618181",
+	"grbgetkey 51702d84-4f7c-42b4-bbbf-5f5e8ae816c0",
+	"grbgetkey f10d030f-e101-423b-9c83-bb25fb421b05",
+	"grbgetkey e8188ee2-4798-4a61-a92b-085acbc5bad6",
+	"grbgetkey 9f5ffa46-85eb-4892-b915-a02eea3b85da",
+	"grbgetkey a56070fd-5ea7-470a-b139-f71e40b80029",
+	"grbgetkey ad819b23-9764-4a2c-9aa9-5edaac8862ba",
+	"grbgetkey 300e8b96-40f1-42fe-aa94-bde4e7296751",
+	"grbgetkey 37b5f866-3b4a-4eb4-99eb-097fafae5752",
+	"grbgetkey 20f4c118-fc79-46b7-952c-b39867cc2837",
 ]
 
 df = pd.DataFrame({

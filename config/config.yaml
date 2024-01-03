@@ -57,10 +57,11 @@ scenario:
   #- 750
   # - 1000
   # - 1500
+  - 1750
   # - 2000
   # - 3500
   # - 3000
-  - 4000
+  # - 4000
   # - 4500
   # - 5000
   # - 5500
@@ -70,8 +71,8 @@ scenario:
   # - 9000
   egs_mode: 
   # - "dh" 
-  - "chp" 
-  # - "elec" 
+  # - "chp" 
+  - "elec" 
   # can be 'elec' for electricity only generation
   # can be 'chp' for electricity and district heat
   # can 'dh' for district heating only
