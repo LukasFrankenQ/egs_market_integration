@@ -51,7 +51,6 @@ __chp__ - 4000 (True, False)
 __dh__ - 4000 (True, False)
 
 
-
 ###### Transmission level capacity expansion
 
 - all running
