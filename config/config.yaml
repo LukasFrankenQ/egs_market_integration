@@ -838,7 +838,7 @@ plotting:
     wave: '#a7d4cf'
     # solar
     solar: "#f9d002"
-    solar PV: "#f9d002"
+    solar PV: '#ffea80'
     solar thermal: '#ffbf2b'
     residential rural solar thermal: '#f1c069'
     services rural solar thermal: '#eabf61'
@@ -851,9 +851,11 @@ plotting:
     geothermal heat surface: '#c19e01'
     production geothermal heat: '#c19e01'
     geothermal heat elec: '#ffbf00'
+    organic rankine cycle: '#ff9041'
     geothermal heat dh : '#ffbf00'
     injection geothermal heat : '#ffbf00'
-    geothermal well : '#ffbf00'
+    # geothermal well : '#ffbf00'
+    geothermal well : '#ff1510'
     geothermal heat dh: '#d19D00'
     geothermal heat chp: '#ffcb2e'
     geothermal heat chp elec: '#ffbf00'
@@ -1016,7 +1018,7 @@ plotting:
     CHP CC: '#634643'
     urban central gas CHP CC: '#6e4e4c'
     CHP heat: '#8a5751'
-    conventional heating: '#8a5751'
+    conventional heating: '#e05b09'
     CHP electric: '#8a5751'
     district heating: '#e8beac'
     resistive heater: '#d8f9b8'
