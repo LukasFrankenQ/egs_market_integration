@@ -28,7 +28,7 @@ scenario:
   opts: # only relevant for PyPSA-Eur
   - ''
   sector_opts: # this is where the main scenario settings are
-  - Co2L0-180H-T-H-B-I-solar+p3-dist1 # recommended to include I, B, definitely B, ideally also I, potential solution, subtract industry demand to not overestimate biomass supply
+  - Co2L0-3H-T-H-B-I-solar+p3-dist1 # recommended to include I, B, definitely B, ideally also I, potential solution, subtract industry demand to not overestimate biomass supply
 
   # to really understand the options here, look in scripts/prepare_sector_network.py
   # Co2Lx specifies the CO2 target in x% of the 1990 values; default will give default (5%);
@@ -54,31 +54,33 @@ scenario:
   # - 100
   # - 250
   # - 500
-  #- 750
-  # - 1000
-  # - 1500
-  - 1750
-  # - 2000
+  # - 750
+  - 1000
+  # - 1200
+  # - 1400
+  # - 1600
+  # - 1750
+  - 2000
   # - 3500
-  # - 3000
-  # - 4000
-  # - 4500
-  # - 5000
-  # - 5500
-  # - 6000
+  - 3000
+  - 4000
+  - 4500
+  - 5000
+  - 5500
+  - 6000
   # - 7000
   # - 8000
   # - 9000
   egs_mode: 
   # - "dh" 
-  # - "chp" 
-  - "elec" 
+  - "dh" 
+  # - "elec" 
   # can be 'elec' for electricity only generation
   # can be 'chp' for electricity and district heat
   # can 'dh' for district heating only
   egs_op: # if flexible egs is allowed
   - "static" # flexible operations switched OFF
-  # - "flex" # flexible operations switched ON
+  - "flex" # flexible operations switched ON
   progress:
   # - 0.0
   - 0.3
@@ -87,7 +89,7 @@ scenario:
   # - 0.75
   # - 1.0
   use_waste_heat:
-  - false
+  # - false
   - true
 
 countries: ['AL', 'AT', 'BA', 'BE', 'BG', 'CH', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GB', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'ME', 'MK', 'NL', 'NO', 'PL', 'PT', 'RO', 'RS', 'SE', 'SI', 'SK']

@@ -8,14 +8,16 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-capex_list = [1000]
+capex_list = [1500, 2500, 3500]
 # mode_list = ["elec", "dh", "chp"]
-mode_list = ["elec"]
+mode_list = ["chp", "dh"]
 clusters = 72
-op_modes = ["static"]
+op_modes = ["flex", "static"]
 investment_years = [2050]
 dh_progresses = [0.3]
-use_waste_heats = [True, False]
+use_waste_heats = [True]
+# ls = ["v1.0", "v1.125", "v1.25"]
+ls = ["v1.0"]
 
 security_lock = False
 
@@ -28,6 +30,7 @@ if security_lock:
 	investement_years = investment_years[:1]
 	dh_progresses = dh_progresses[:1]
 	use_waste_heats = use_waste_heats[:1]
+	ls = ls[:1]
 
 	logger.warning("Security lock is switched on, setting up only one experiment!")
 else:
