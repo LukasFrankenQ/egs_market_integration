@@ -25,6 +25,7 @@ __dh__  -  __flex__  ------  1000  -  1500  -  2000  -  2500  -  3000 - 4000 - 5
 
 - chp static and flex for 1000 euro/kw
 - chp flex for 4500 euro/kW
+- elec until ~2500 euro/kW
 
 
 ##### Sensitity Analyses
@@ -48,7 +49,6 @@ __dh__ - 4000 (running, running, running, running, running)
 __elec__ - 1000 (True, False)
 __chp__ - 4000 (True, False)
 __dh__ - 4000 (True, False)
-
 
 
 ###### Transmission level capacity expansion
