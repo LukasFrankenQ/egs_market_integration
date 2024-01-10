@@ -672,6 +672,7 @@ def calculate_nodal_geothermal_stats(n, label, nodal_geothermal_stats):
         gt = pd.concat((
             gt.loc[gt.carrier == carrier, "p_nom_opt"].rename(carrier) for carrier in gt.carrier.unique()
         ), axis=1)
+
         return gt
 
     df = get_geothermal_capacity(n, mode)
@@ -704,7 +705,47 @@ def calculate_nodal_geothermal_stats(n, label, nodal_geothermal_stats):
     geothermal_gen = (ag := all_gens.loc[geothermal_mask]).groupby(ag.bus.str[:5]).sum()["total_gen"]
     total_gen = all_gens.groupby(all_gens.bus.str[:5]).sum()["total_gen"]
 
-    df["geothermal generation share"] = geothermal_gen / total_gen
+    df["AC_total_generation"] = total_gen
+    df["AC_geothermal_generation"] = geothermal_gen
+    df["AC_geothermal_generation_share"] = geothermal_gen / total_gen
+
+    urban_central_inflows = [
+        "urban central air heat pump",
+        "urban central resistive heater",
+        "urban central gas boiler",
+        "H2 Fuel Cell gas boiler",
+        ]
+    connections = list()
+    inflow = pd.DataFrame(index=gen_links.bus.unique())
+    geothermal_source = None
+    for i in range(5):
+
+        urban_links = n.links.loc[getattr(n.links, f"bus{i}").str.contains("urban central")]
+        for carrier in urban_links.carrier.unique():
+            if "charger" in carrier:
+                continue
+            if "geothermal" in carrier:
+                geothermal_source = carrier
+
+            idx = n.links.loc[n.links.carrier == carrier].index
+            flow = getattr(n.links_t, f'p{i}')[idx].sum().sum()
+            if flow < 0:
+                connections.append(carrier)
+                flow = getattr(n.links_t, f'p{i}')[idx].sum().mul(-1)
+                flow.index = flow.index.str[:5]
+                inflow[carrier] = flow
+
+    df["uch_total_generation"] = inflow.sum(axis=1)
+    if geothermal_source is None:
+        df["uch_geothermal_generation"] = 0.
+        df["uch_geothermal_generation_share"] = 0.
+    else:
+        df["uch_geothermal_generation"] = inflow[geothermal_source]
+        df["uch_geothermal_generation_share"] = inflow[geothermal_source] / inflow.sum(axis=1)
+
+    gen_links = n.links.loc[n.links.carrier.isin(connections)]
+    gen_links.loc[:, "total_gen"] = pd.Series(gen_links.index, gen_links.index).apply(lambda name: n.links_t.p1[name].sum() * (-1.))
+    gen_links["bus"] = gen_links.bus1
 
     renewables = ["solar", "onwind", "offwind-dc", "offwind-ac"]
 
