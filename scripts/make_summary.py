@@ -717,6 +717,8 @@ def calculate_nodal_geothermal_stats(n, label, nodal_geothermal_stats):
         ]
     connections = list()
     inflow = pd.DataFrame(index=gen_links.bus.unique())
+    if len(inflow.index[0]) > 5:
+        inflow.index = inflow.index.str[:5]
     geothermal_source = None
     for i in range(5):
 
@@ -736,6 +738,7 @@ def calculate_nodal_geothermal_stats(n, label, nodal_geothermal_stats):
                 inflow[carrier] = flow
 
     df["uch_total_generation"] = inflow.sum(axis=1)
+
     if geothermal_source is None:
         df["uch_geothermal_generation"] = 0.
         df["uch_geothermal_generation_share"] = 0.

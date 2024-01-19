@@ -51,35 +51,40 @@ scenario:
   - 2050
   # for myopic foresight
   egs_capex:
-  # - 100
-  # - 250
-  # - 500
-  # - 750
+  - 100
+  - 250
+  - 500
+  - 750
   - 1000
-  # - 1200
-  # - 1400
-  # - 1600
-  # - 1750
-  - 2000
+  - 1100
+  - 1200
+  - 1300
+  - 1400
+  - 1500
+  - 1600
+  - 1700
+  - 1800
+  - 1900
+  # - 2500
+  # - 3000
   # - 3500
-  - 3000
-  - 4000
-  - 4500
-  - 5000
-  - 5500
-  - 6000
+  # - 4000
+  # - 4500
+  # - 5000
+  # - 5500
+  # - 6000
   # - 7000
   # - 8000
   # - 9000
   egs_mode: 
+  # - "chp" 
   # - "dh" 
-  - "dh" 
-  # - "elec" 
+  - "elec" 
   # can be 'elec' for electricity only generation
   # can be 'chp' for electricity and district heat
   # can 'dh' for district heating only
   egs_op: # if flexible egs is allowed
-  - "static" # flexible operations switched OFF
+  # - "static" # flexible operations switched OFF
   - "flex" # flexible operations switched ON
   progress:
   # - 0.0
