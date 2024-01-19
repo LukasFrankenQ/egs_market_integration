@@ -60,6 +60,15 @@ __chp__ - 4000 (1.0, 1.125, 1.25)
 __dh__ - 4000 (1.0, 1.125, 1.25)
 
 
+STILL NEED!!
+- chp 1500 flex
+- chp 2500 flex
+- dh 2500 static
+- chp 3500 flex
+- chp 3500 static
+- dh 3500 static
+
+
 
 #### 72 clusters, 2050, dh progress sensitivity
 
