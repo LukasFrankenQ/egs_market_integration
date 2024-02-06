@@ -3275,8 +3275,18 @@ def add_sweep_egs(n, snakemake, costs):
     orc_fom = config["sector"]["egs_orc_FOM"]
     logger.info(f"Using ORC FOM {orc_fom} %.")
 
-    # annuitizing costs
-    drilling_cost = float(snakemake.wildcards.egs_capex) * 1000  # Euro/kW -> Euro/MW
+    logger.info(f"Using costs from Breyer: {snakemake.params.sector['egs_cost_from_breyer']}")
+    # computing costs
+    if not snakemake.params.sector["egs_cost_from_breyer"]:
+        drilling_cost = float(snakemake.wildcards.egs_capex) * 1000  # Euro/kW -> Euro/MW
+    else:
+        drilling_cost = (
+            pd.read_csv(snakemake.input.egs_costs)
+            .set_index("name")
+            [f"capex_{snakemake.params.sector['egs_cost_method']}"]
+            .fillna(np.inf)
+        )
+
     logger.info(f"Received wildcard drilling cost: {drilling_cost}")
 
     injection_well_cost = annuity_factor * drilling_cost
