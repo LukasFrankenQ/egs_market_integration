@@ -26,7 +26,10 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 import xarray as xr
+import warnings
 from shapely.geometry import Polygon
+
+warnings.filterwarnings("ignore")
 
 
 def prepare_egs_data(egs_file):
@@ -228,10 +231,8 @@ if __name__ == "__main__":
         .set_crs("EPSG:4326")
     )
 
-    capex_year = int(snakemake.wildcards["egs_capex"][4:])
-
-    import warnings
-    warnings.filterwarnings("ignore")
+    capex_year = int(snakemake.wildcards["egs_capex"])
+    assert capex_year in [2020, 2025, 2030, 2035, 2040, 2045, 2050]
 
     p = gpd.GeoDataFrame(
         capex[[capex_year]]

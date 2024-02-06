@@ -741,7 +741,7 @@ rule build_egs_potentials:
     resources:
         mem_mb=2000,
     log:
-        LOGS + "build_egs_potentials_s{simpl}_{clusters}_{egs_cost_year}.log",
+        LOGS + "build_egs_potentials_s{simpl}_{clusters}_{egs_capex}.log",
     conda:
         "../envs/environment.yaml"
     script:

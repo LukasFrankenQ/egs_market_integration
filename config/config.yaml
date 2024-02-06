@@ -562,7 +562,7 @@ sector:
   # egs_performant: true # if true, only adds the cheapest egs plant per region
 
   egs_sweep_run: true
-  egs_cost_from_breyer: false
+  egs_cost_from_breyer: true
   egs_orc_capex: 1_500_000 # Euro/MW, taken from Aghahosseini et al., converted to Euro, adjusted to other research figures
   egs_storage_max_hours: 24 # hours (Ricks et al. 2023 (The Role of Flexible Geothermal...))
 
