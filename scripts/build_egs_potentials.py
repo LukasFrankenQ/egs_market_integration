@@ -188,17 +188,24 @@ def prepare_capex():
 
         capex.loc[missing_idx, [sooner]] = from_later * factor_mean.loc[later]
 
-    capacity_factor = 0.9
-    orc_cost = 1900 # USD/kW
-    efficiency = 0.12
+    # capacity_factor = 0.9
+    print("params sector")
+    print(snakemake.params.sector)
+
+    orc_cost = 1900 # USD/kW; value from Aghahosseini, Breyer (2022)
+    efficiency = snakemake.params.sector["egs_efficiency_electricity"]
 
     for year in capex.columns[1:]:
 
         orc_cost /= factor_mean.loc[year]
         capex.loc[:, year] = capex[year] - orc_cost
 
-    capex = capex / capacity_factor * efficiency
+    # capex = capex / capacity_factor * efficiency
+    capex *= efficiency
     
+    print('At the end of get capex')
+    print(capex.head())
+
     return capex
 
 
@@ -212,12 +219,51 @@ if __name__ == "__main__":
             simpl="",
             clusters=37,
         )
+    
+    capex = prepare_capex()
 
-    if not snakemake.wildcards["egs_capex"].startswith("year"):
-        pd.DataFrame().to_csv(snakemake.output["egs_costs"])
-        quit()
+    regions = (
+        gpd.read_file(snakemake.input.regions)
+        .set_index("name")
+        .set_crs("EPSG:4326")
+    )
 
+    capex_year = int(snakemake.wildcards["egs_capex"][4:])
 
+    import warnings
+    warnings.filterwarnings("ignore")
+
+    p = gpd.GeoDataFrame(
+        capex[[capex_year]]
+        .reset_index()
+        .rename(columns={capex_year: "CAPEX"}), crs="EPSG:4326"
+        )
+
+    capexes_mean = list()
+    capexes_min = list()
+
+    for i, (region, row) in enumerate(regions.iterrows()):
+
+        overlap = p.loc[p.geometry.intersects(row.geometry)]
+        shares = (a := overlap.geometry.intersection(row.geometry).area) / a.sum()
+
+        capexes_mean.append(shares.multiply(overlap["CAPEX"]).sum() or np.nan)
+        capexes_min.append(overlap["CAPEX"].min() or np.nan)
+
+    regions["capex_mean"] = capexes_mean
+    regions["capex_min"] = capexes_min
+
+    print(regions.head())
+
+    (
+        regions
+        .reset_index()
+        [["capex_mean", "capex_min", "name"]]
+        .to_csv(snakemake.output["egs_costs"], index=False)
+    )
+
+    import sys
+    sys.exit()
 
 
     sustainability_factor = 0.0025
@@ -225,7 +271,6 @@ if __name__ == "__main__":
     # we are not constraining ourselves to the sustainable share, but
     # inversely apply it to our underlying data, which refers to the
     # sustainable heat.
-
 
     config = snakemake.config
 

@@ -723,6 +723,31 @@ rule build_egs_efficiencies:
         "../scripts/build_egs_efficiencies.py"
 
 
+rule build_egs_potentials:
+    params:
+        snapshots=config["snapshots"],
+        sector=config["sector"],
+    input:
+        egs_cost="data/egs_costs.json",
+        regions=RESOURCES + "regions_onshore_elec_s{simpl}_{clusters}.geojson",
+        # air_temperature=RESOURCES + "temp_air_total_elec_s{simpl}_{clusters}.nc"
+        # if config["sector"]["enhanced_geothermal_var_cf"]
+        # else [],
+    output:
+        egs_costs=RESOURCES + "egs_costs_s{simpl}_{clusters}_{egs_capex}.csv"
+        if config["sector"]["egs_cost_from_breyer"]
+        else [],
+    threads: 1
+    resources:
+        mem_mb=2000,
+    log:
+        LOGS + "build_egs_potentials_s{simpl}_{clusters}_{egs_cost_year}.log",
+    conda:
+        "../envs/environment.yaml"
+    script:
+        "../scripts/build_egs_potentials.py"
+
+
 rule prepare_sector_network:
     params:
         co2_budget=config["co2_budget"],
@@ -786,6 +811,10 @@ rule prepare_sector_network:
         cop_air_rural=RESOURCES + "cop_air_rural_elec_s{simpl}_{clusters}.nc",
         cop_air_urban=RESOURCES + "cop_air_urban_elec_s{simpl}_{clusters}.nc",
         egs_efficiencies=RESOURCES + "egs_efficiencies_s{simpl}_{clusters}.csv",
+        egs_costs=RESOURCES + "egs_costs_s{simpl}_{clusters}_{egs_capex}.csv"
+        # if egs_capex.startswith("year")
+        if config["sector"]["egs_cost_from_breyer"]
+        else [],
         solar_thermal_total=RESOURCES
         + "solar_thermal_total_elec_s{simpl}_{clusters}.nc"
         if config["sector"]["solar_thermal"]
