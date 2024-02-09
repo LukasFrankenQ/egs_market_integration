@@ -3284,8 +3284,8 @@ def add_sweep_egs(n, snakemake, costs):
             pd.read_csv(snakemake.input.egs_costs)
             .set_index("name")
             [f"capex_{snakemake.params.sector['egs_cost_method']}"]
-            .fillna(np.inf)
-        )
+            .fillna(10_000)
+        ) * 1000.
 
     logger.info(f"Received wildcard drilling cost: {drilling_cost}")
 
