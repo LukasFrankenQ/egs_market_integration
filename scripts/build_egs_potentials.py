@@ -266,7 +266,6 @@ if __name__ == "__main__":
     import sys
     sys.exit()
 
-
     sustainability_factor = 0.0025
     # the share of heat that is replenished from the earth's core.
     # we are not constraining ourselves to the sustainable share, but
