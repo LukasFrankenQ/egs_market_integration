@@ -174,14 +174,24 @@ def prepare_capex():
 
     """PROCESSING CAPEX"""
 
-    capex = pd.DataFrame(index=prepared_data[2050].geometry, columns=prepared_data.keys())
+    fmm = factor_mean.mean()
 
+    factor_mean = pd.concat((
+        pd.Series(fmm, index=np.arange(1990, min(factor_mean.index), 5).astype(int)),
+        factor_mean)
+    )
+
+    # capex = pd.DataFrame(index=prepared_data[2050].geometry, columns=prepared_data.keys())
+    capex = pd.DataFrame(index=prepared_data[2050].geometry, columns=factor_mean.index)
     capex.loc[:, 2050] = prepared_data[2050]["CAPEX"]
+
     for sooner, later in zip(capex.columns[::-1][1:], capex.columns[::-1]):
 
-        p = prepared_data[sooner]
+        if sooner > 2015:
 
-        capex.loc[p.geometry, sooner] = p["CAPEX"]
+            p = prepared_data[sooner]
+            capex.loc[p.geometry, sooner] = p["CAPEX"]
+
         missing_idx = capex.loc[capex[sooner].isna()].index
 
         from_later = (
@@ -195,13 +205,16 @@ def prepare_capex():
     print("params sector")
     print(snakemake.params.sector)
 
-    orc_cost = 1900 # USD/kW; value from Aghahosseini, Breyer (2022)
+    # orc_cost = 1900 # USD/kW; value from Aghahosseini, Breyer (2022)
+    orc_cost = 1900 * fmm**len(factor_mean.loc[:2015]) # USD/kW
+    adj_orc_cost = orc_cost
+
     efficiency = snakemake.params.sector["egs_efficiency_electricity"]
 
     for year in capex.columns[1:]:
 
-        orc_cost /= factor_mean.loc[year]
-        capex.loc[:, year] = capex[year] - orc_cost
+        adj_orc_cost /= factor_mean.loc[year]
+        capex.loc[:, year] = capex[year] - adj_orc_cost
 
     # capex = capex / capacity_factor * efficiency
     capex *= efficiency
@@ -232,7 +245,7 @@ if __name__ == "__main__":
     )
 
     capex_year = int(snakemake.wildcards["egs_capex"])
-    assert capex_year in [2020, 2025, 2030, 2035, 2040, 2045, 2050]
+    assert capex_year in [1990, 1995, 2000, 2005, 2010, 2015, 2020, 2025, 2030, 2035, 2040, 2045, 2050]
 
     p = gpd.GeoDataFrame(
         capex[[capex_year]]
