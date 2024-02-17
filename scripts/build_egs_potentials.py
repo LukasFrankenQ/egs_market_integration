@@ -202,6 +202,7 @@ def prepare_capex():
         capex.loc[missing_idx, [sooner]] = from_later * factor_mean.loc[later]
 
     # capacity_factor = 0.9
+
     # orc_cost = 1900 # USD/kW; value from Aghahosseini, Breyer (2022)
     orc_cost = 1900 * fmm**len(factor_mean.loc[:2015]) # USD/kW
     adj_orc_cost = orc_cost
