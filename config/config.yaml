@@ -65,6 +65,12 @@ scenario:
   # - 1700
   # - 1800
   # - 1900
+  - 1990
+  - 1995
+  - 2000
+  - 2005
+  - 2010
+  - 2015
   - 2020
   - 2025
   - 2030
@@ -83,8 +89,8 @@ scenario:
   # - 8000
   # - 9000
   egs_mode: 
-  # - "chp" 
-  # - "dh" 
+  - "chp" 
+  - "dh" 
   - "elec" 
   # can be 'elec' for electricity only generation
   # can be 'chp' for electricity and district heat
