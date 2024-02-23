@@ -883,7 +883,7 @@ plotting:
     geothermal heat chp dh: '#d19D00'
     geothermal elec dump to elec: '#ffbf00'
     # gas
-    OCGT: '#e0986c'
+    OCGT: '#a85522'
     OCGT marginal: '#e0986c'
     OCGT-heat: '#e0986c'
     gas boiler: '#db6a25'
