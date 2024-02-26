@@ -42,4 +42,4 @@ reverse_coarse_regions = {
     b: a for a, bs in coarse_regions.items() for b in bs
 }
 
-min_cost_acceleration_factor = 15 # years
+min_cost_acceleration_factor = 0 # years
