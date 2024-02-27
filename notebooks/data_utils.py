@@ -120,6 +120,7 @@ def get_capacity_data(mode, op):
     index_col = [0,1,2]
     header = [0,1,2,3,4,5,6,7,8]
 
+    """
     if mode == "chp" or mode == "dh":
         df = pd.read_csv(
             root / f"{mode}_data" / 
@@ -142,6 +143,18 @@ def get_capacity_data(mode, op):
                 index_col=index_col,
                 header=header,
             )
+    """
+
+    df = pd.read_csv(
+        root /
+        "breyer_sweep" /
+        "joint_data" /
+        "nodal_capacities.csv", 
+        index_col=index_col, 
+        header=header,
+        )
+
+    df = df.loc[:,idx[:,:,:,:,:,mode]].iloc[:,2:]
     
     df.columns = df.columns.droplevel([0,1,2,3,5,7,8])
     df = df.loc[idx[:,:,"injection geothermal heat"], idx[:,op]]
