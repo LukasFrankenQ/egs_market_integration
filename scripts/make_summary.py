@@ -782,6 +782,26 @@ def calculate_nodal_geothermal_stats(n, label, nodal_geothermal_stats):
     return nodal_geothermal_stats
 
 
+def calculate_nodal_loads(n, label, nodal_loads):
+
+    buses = n.buses.location.unique()[:-1]
+    loads = pd.DataFrame(index=buses)
+
+    for carrier in ["electricity", "urban central heat"]:
+
+        index = n.loads[n.loads.carrier == carrier].index
+        carrier_loads = n.loads_t.p_set[index.intersection(n.loads_t.p_set.columns)].sum()
+        carrier_loads.index = carrier_loads.index.str[:5]
+        carrier_loads = pd.DataFrame(carrier_loads, columns=[carrier])
+
+        loads = pd.concat([loads, carrier_loads], axis=1)
+
+    nodal_loads[label] = loads.stack()
+
+    return nodal_loads
+
+
+
 def make_summaries(networks_dict):
     outputs = [
         "nodal_geothermal_stats",
@@ -800,6 +820,7 @@ def make_summaries(networks_dict):
         "price_statistics",
         "market_values",
         "metrics",
+        "nodal_loads",
     ]
 
     columns = pd.MultiIndex.from_tuples(
