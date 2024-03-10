@@ -65,12 +65,12 @@ scenario:
   # - 1700
   # - 1800
   # - 1900
-  - 1990
-  - 1995
-  - 2000
-  - 2005
-  - 2010
-  - 2015
+  # - 1990
+  # - 1995
+  # - 2000
+  # - 2005
+   #- 2010
+  # - 2015
   - 2020
   - 2025
   - 2030
@@ -90,7 +90,7 @@ scenario:
   # - 9000
   egs_mode: 
   - "chp" 
-  - "dh" 
+  # - "dh" 
   - "elec" 
   # can be 'elec' for electricity only generation
   # can be 'chp' for electricity and district heat
@@ -575,7 +575,7 @@ sector:
 
   egs_sweep_run: true
   egs_cost_from_breyer: true
-  egs_cost_method: min # can be 'min' for minimum or 'mean' for weighted average
+  egs_cost_method: mean # can be 'min' for minimum or 'mean' for weighted average
   egs_orc_capex: 1_500_000 # Euro/MW, taken from Aghahosseini et al., converted to Euro, adjusted to other research figures
   egs_storage_max_hours: 24 # hours (Ricks et al. 2023 (The Role of Flexible Geothermal...))
 
