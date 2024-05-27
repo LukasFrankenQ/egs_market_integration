@@ -770,6 +770,16 @@ def calculate_nodal_geothermal_stats(n, label, nodal_geothermal_stats):
 
     df['dac'] = get_dac_capacity(n)
 
+
+    buses = n.buses.index[n.buses.carrier == "AC"]
+    df['AC_marginal_price'] = n.buses_t.marginal_price[buses].mean()
+
+    buses = n.buses.index[n.buses.carrier == "urban central heat"]
+    uch = n.buses_t.marginal_price[buses].mean()
+    uch.index = uch.index.str[:5]
+
+    df['uch_marginal_price'] = uch
+
     df = df.stack()
 
     nodal_geothermal_stats[label] = df
