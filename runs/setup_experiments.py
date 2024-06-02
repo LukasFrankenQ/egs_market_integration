@@ -8,22 +8,30 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-capex_list = [1990, 1995, 2000, 2005, 2010, 2015, 2020, 2025, 2030, 2035, 2040, 2045, 2050]
-# capex_list = [2035]
+# capex_list = [1990, 1995, 2000, 2005, 2010, 2015, 2020, 2025, 2030, 2035, 2040, 2045, 2050]
+capex_list = [2035]
 # mode_list = ["elec", "dh", "chp"]
-mode_list = ["dh", "elec", "chp"]
+mode_list = ["dh"]
 clusters = 72
-op_modes = ["static", "flex"]
+op_modes = ["static"]
 investment_years = [2050]
 dh_progresses = [0.3]
 use_waste_heats = [True]
 # ls = ["v1.0", "v1.125", "v1.25"]
 ls = ["v1.0"]
 
+f1, f2 = 0.8, 1.2
+template = 'Co2L0-3H-T-H-B-I-solar+p3-dist1-wind+c{}-solar+c{}-ror+c{}-hydro+c{}-nuclear+c{}'
+sector_ops = [
+	# 'Co2L0-3H-T-H-B-I-solar+p3-dist1',
+	template.format(f1, f1, f1, f1, f1),
+	# template.format(f2, f2, f2, f2, f2),
+]
+
 security_lock = False
 
 root = Path("/exports/csce/eddie/eng/groups/energy-systems-group/projects/basic_egs/pypsa-eur")
-config_template = "config_{}_{}_{}_{}_{}_{}.yaml"
+config_template = "config_{}_{}_{}_{}_{}_{}_{}.yaml"
 
 if security_lock:
 	capex_list = capex_list[:1]
@@ -52,11 +60,29 @@ def retrieve_licence(lfile):
 			return current_lic
 
 
-def setup_config(rundir, investment_year, capex, mode, clusters, egs_op, progress, use_waste_heat):
+def setup_config(
+	rundir,
+	investment_year,
+	capex,
+	mode,
+	clusters,
+	egs_op,
+	progress,
+	use_waste_heat,
+	sector_ops
+	):
 
 	config_base = root / "config" / "config.yaml"
 
-	config_target = rundir / config_template.format(investment_year, int(capex), mode, egs_op, progress, use_waste_heat)
+	config_target = rundir / config_template.format(
+		sector_ops,
+		investment_year,
+		int(capex),
+		mode,
+		egs_op,
+		progress,
+		use_waste_heat
+		)
 
 	with open(config_base, "r") as f:
 		config = yaml.safe_load(f)
@@ -74,20 +100,47 @@ def setup_config(rundir, investment_year, capex, mode, clusters, egs_op, progres
 		yaml.dump(config, f)
 
 
-def create_scripts(rundir, investment_year, capex, mode, egs_op, progress, use_waste_heat):
+def create_scripts(rundir, investment_year, capex, mode, egs_op, progress, use_waste_heat, sector_ops):
 
 	main_fn = rundir / "main.sh"
 
 	facil_fn = rundir / "facil.exp"
 	get_licence_fn = rundir / "get_licence.sh"
 
-	config_file = rundir / config_template.format(investment_year, int(capex), mode, egs_op, progress, use_waste_heat)
+	config_file = rundir / config_template.format(
+		investment_year,
+		int(capex),
+		mode,
+		egs_op,
+		progress,
+		use_waste_heat,
+		)
 
 	logger.info(f"Setting up main as {str(main_fn)}")
 
-	model_template = "results/basic_test/{}networks/elec_s_{}_lv1.0__Co2L0-3H-T-H-B-I-solar+p3-dist1_{}_{}_{}_{}_{}_{}.nc"
-	pre_model_name = model_template.format("pre", clusters, investment_year, capex, mode, egs_op, progress, use_waste_heat)
-	post_model_name = model_template.format("post", clusters, investment_year, capex, mode, egs_op, progress, use_waste_heat)
+	model_template = "results/basic_test/{}networks/elec_s_{}_lv1.0__{}_{}_{}_{}_{}_{}_{}.nc"
+	pre_model_name = model_template.format(
+		"pre",
+		clusters,
+		sector_ops,
+		investment_year,
+		capex,
+		mode,
+		egs_op,
+		progress,
+		use_waste_heat,
+		)
+	post_model_name = model_template.format(
+		"post",
+		clusters,
+		sector_ops,
+		investment_year,
+		capex,
+		mode,
+		egs_op,
+		progress,
+		use_waste_heat
+		)
 
 	# main_fn = "testmain.sh"
 	# facil_fn = "testfacil.exp"
@@ -165,20 +218,52 @@ def create_scripts(rundir, investment_year, capex, mode, egs_op, progress, use_w
 	os.system(f"chmod +x {get_licence_fn}")
 
 
-for capex, mode, investment_year, egs_op, progress, use_waste_heat in product(capex_list, mode_list, investment_years, op_modes, dh_progresses, use_waste_heats):
+for so, capex, mode, investment_year, egs_op, progress, use_waste_heat in product(
+	sector_ops,
+	capex_list,
+	mode_list,
+	investment_years,
+	op_modes,
+	dh_progresses,
+	use_waste_heats,
+	):
 
-	rundir = root / "runs" / "run_data" / f"{mode}_{egs_op}_{int(clusters)}" / f"run_{int(capex)}_{investment_year}_{progress}_{use_waste_heat}"
+	rundir = (
+		root /
+		"runs" /
+		"run_data" /
+		f"{mode}_{egs_op}_{int(clusters)}" /
+		f"run_{int(capex)}_{investment_year}_{progress}_{use_waste_heat}_{so}"
+	)
 	print(f"Setting up experiment in dir {str(rundir)}")
 
-	summary = f"CAPEX {capex}, mode {mode}, operation {egs_op}, investment year {investment_year}, {progress}, waste heat {use_waste_heat}."
+	summary = f"CAPEX {capex}, mode {mode}, operation {egs_op}, investment year {investment_year}, {progress}, waste heat {use_waste_heat}, sector_ops {so}."
 	try:
 
 		if rundir.is_file():
 			logger.warning(f"Rundir {str(rundir)} already exists.")
 		os.makedirs(rundir, exist_ok=True)
 
-		setup_config(rundir, investment_year, capex, mode, clusters, egs_op, progress, use_waste_heat)
-		create_scripts(rundir, investment_year, capex, mode, egs_op, progress, use_waste_heat)
+		setup_config(
+			rundir,
+			investment_year,
+			capex,
+			mode,
+			clusters,
+			egs_op,
+			progress,
+			use_waste_heat,
+			so
+			)
+		create_scripts(rundir,
+			investment_year,
+			capex,
+			mode,
+			egs_op,
+			progress,
+			use_waste_heat,
+			so
+			)
 
 		print(f"Created run! {summary}")
 
