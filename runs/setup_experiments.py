@@ -9,9 +9,9 @@ import logging
 logger = logging.getLogger(__name__)
 
 # capex_list = [1990, 1995, 2000, 2005, 2010, 2015, 2020, 2025, 2030, 2035, 2040, 2045, 2050]
-capex_list = [2035]
+capex_list = [2050]
 # mode_list = ["elec", "dh", "chp"]
-mode_list = ["dh"]
+mode_list = ["elec"]
 clusters = 72
 op_modes = ["static"]
 investment_years = [2050]
@@ -267,6 +267,6 @@ for so, capex, mode, investment_year, egs_op, progress, use_waste_heat in produc
 
 		print(f"Created run! {summary}")
 
-	except:
-
+	except Exception as e:
+		print(e)
 		print(f"Failed to create run! {summary}.")
