@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
+'''
 if config["enable"].get("prepare_links_p_nom", False):
 
     rule prepare_links_p_nom:
@@ -440,3 +441,4 @@ rule prepare_network:
         "../envs/environment.yaml"
     script:
         "../scripts/prepare_network.py"
+'''
