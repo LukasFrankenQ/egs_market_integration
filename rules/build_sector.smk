@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: : 2023 The PyPSA-Eur Authors
 #
 # SPDX-License-Identifier: MIT
+'''
 
 
 rule build_population_layouts:
@@ -747,6 +748,7 @@ rule build_egs_potentials:
     script:
         "../scripts/build_egs_potentials.py"
 
+'''
 
 rule prepare_sector_network:
     params:
