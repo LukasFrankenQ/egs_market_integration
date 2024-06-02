@@ -23,6 +23,8 @@ scenario:
   - ''
   ll:  # allowed transmission line volume expansion, can be any float >= 1.0 with a prefix v|c (today) or "copt"
   - v1.0
+  - v1.125
+  - v1.25
   clusters:  # number of nodes in Europe, any integer between 37 (1 node per country-zone) and several hundred
   - 72
   opts: # only relevant for PyPSA-Eur
@@ -71,12 +73,12 @@ scenario:
   # - 2005
    #- 2010
   # - 2015
-  - 2020
-  - 2025
-  - 2030
-  - 2035
-  - 2040
-  - 2045
+  # - 2020
+  # - 2025
+  # - 2030
+  # - 2035
+  # - 2040
+  # - 2045
   - 2050
   # - 3000
   # - 3500
@@ -89,7 +91,7 @@ scenario:
   # - 8000
   # - 9000
   egs_mode: 
-  - "chp" 
+  # - "chp" 
   # - "dh" 
   - "elec" 
   # can be 'elec' for electricity only generation
