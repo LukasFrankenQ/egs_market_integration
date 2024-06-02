@@ -238,35 +238,35 @@ for so, capex, mode, investment_year, egs_op, progress, use_waste_heat in produc
 	print(f"Setting up experiment in dir {str(rundir)}")
 
 	summary = f"CAPEX {capex}, mode {mode}, operation {egs_op}, investment year {investment_year}, {progress}, waste heat {use_waste_heat}, sector_ops {so}."
-	try:
+	# try:
 
-		if rundir.is_file():
-			logger.warning(f"Rundir {str(rundir)} already exists.")
-		os.makedirs(rundir, exist_ok=True)
+	if rundir.is_file():
+		logger.warning(f"Rundir {str(rundir)} already exists.")
+	os.makedirs(rundir, exist_ok=True)
 
-		setup_config(
-			rundir,
-			investment_year,
-			capex,
-			mode,
-			clusters,
-			egs_op,
-			progress,
-			use_waste_heat,
-			so
-			)
-		create_scripts(rundir,
-			investment_year,
-			capex,
-			mode,
-			egs_op,
-			progress,
-			use_waste_heat,
-			so
-			)
+	setup_config(
+		rundir,
+		investment_year,
+		capex,
+		mode,
+		clusters,
+		egs_op,
+		progress,
+		use_waste_heat,
+		so
+		)
+	create_scripts(rundir,
+		investment_year,
+		capex,
+		mode,
+		egs_op,
+		progress,
+		use_waste_heat,
+		so
+		)
 
-		print(f"Created run! {summary}")
+	print(f"Created run! {summary}")
 
-	except Exception as e:
-		print(e)
-		print(f"Failed to create run! {summary}.")
+	# except Exception as e:
+	# 	print(e)
+	# 	print(f"Failed to create run! {summary}.")
