@@ -99,7 +99,7 @@ rule make_summary:
         costs=RESULTS + "csvs/costs.csv",
         capacities=RESULTS + "csvs/capacities.csv",
         curtailment=RESULTS + "csvs/curtailment.csv",
-        energy=RESULTS + "csvs/energy.csv",
+        # energy=RESULTS + "csvs/energy.csv",
         supply=RESULTS + "csvs/supply.csv",
         supply_energy=RESULTS + "csvs/supply_energy.csv",
         prices=RESULTS + "csvs/prices.csv",

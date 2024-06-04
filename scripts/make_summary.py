@@ -822,7 +822,7 @@ def make_summaries(networks_dict):
         "costs",
         "capacities",
         "curtailment",
-        "energy",
+        # "energy",
         "supply",
         "supply_energy",
         "prices",
