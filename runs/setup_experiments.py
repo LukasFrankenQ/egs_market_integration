@@ -9,9 +9,9 @@ import logging
 logger = logging.getLogger(__name__)
 
 # capex_list = [1990, 1995, 2000, 2005, 2010, 2015, 2020, 2025, 2030, 2035, 2040, 2045, 2050]
-capex_list = [2050]
+capex_list = [2035]
 # mode_list = ["elec", "dh", "chp"]
-mode_list = ["elec"]
+mode_list = ["dh", "chp"]
 clusters = 72
 op_modes = ["static"]
 investment_years = [2050]
@@ -25,7 +25,7 @@ template = 'Co2L0-3H-T-H-B-I-solar+p3-dist1-wind+c{}-solar+c{}-ror+c{}-hydro+c{}
 sector_ops = [
 	# 'Co2L0-3H-T-H-B-I-solar+p3-dist1',
 	template.format(f1, f1, f1, f1, f1),
-	# template.format(f2, f2, f2, f2, f2),
+	template.format(f2, f2, f2, f2, f2),
 ]
 
 security_lock = False
@@ -94,6 +94,7 @@ def setup_config(
 	config["scenario"]["planning_horizons"] = investment_year
 	config["scenario"]["progress"] = progress
 	config["scenario"]["use_waste_heat"] = use_waste_heat
+	config["scenario"]["sector_opts"] = sector_ops
 
 	logger.info(f"Storing resulting config as {config_target}.")
 	with open(config_target, "w") as f:
@@ -108,6 +109,7 @@ def create_scripts(rundir, investment_year, capex, mode, egs_op, progress, use_w
 	get_licence_fn = rundir / "get_licence.sh"
 
 	config_file = rundir / config_template.format(
+        sector_ops,
 		investment_year,
 		int(capex),
 		mode,
