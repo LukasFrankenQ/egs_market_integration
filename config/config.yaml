@@ -1102,7 +1102,7 @@ plotting:
     power-to-liquid: '#25c49a'
     gas-to-power/heat: '#ee8340'
     waste: '#e3d37d'
-    other: '#000000'
+    other: '#777777'
     geothermal: '#ba91b1'
     AC: "#70af1d"
     AC-AC: "#70af1d"
