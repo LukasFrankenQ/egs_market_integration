@@ -16,9 +16,9 @@ xaxis_mapper = {
 
 
 coarse_regions = {
-    "Southern-Central Germany": ["DE1 6", "DE1 2", "DE1 4", "DE1 1", "DE1 7", "DE1 9", "DE1 8"],
+    "Southern-Central\nGermany": ["DE1 6", "DE1 2", "DE1 4", "DE1 1", "DE1 7", "DE1 9", "DE1 8"],
     "Northern Germany": ["DE1 5", "DE1 0", "DE1 3"],
-    "Northern Italy, Slovenia": ["IT1 1", "IT1 3", "IT1 0", "SI1 0"],
+    "Northern Italy,\nSlovenia": ["IT1 1", "IT1 3", "IT1 0", "SI1 0"],
     "Southern Italy": ["IT1 2", "IT1 4", "IT3 0", "IT1 5"],
     # "Norway": ["NO2 0", "NO2 1"],
     "Western Poland": ["PL1 0"],
@@ -42,9 +42,9 @@ coarse_regions = {
     "Iberia": ["ES1 3", "ES1 2", "ES1 1", "ES1 0", "ES4 0", "PT1 0"],
     "Austria": ["AT1 0"],
     "Switzerland": ["CH1 0"],
-    "Czech Republic, Slovakia": ["CZ1 0", "SK1 0"],
-    "Romania, Bulgaria, Serbia, Hungary": ["RO1 0", "BG1 0", "RS1 0", "HU1 0"],
-    "Bosnia, Montenegro, Albania, Croatia": ["BA1 0", "ME1 0", "AL1 0", "HR1 0"],
+    "Czech Republic,\nSlovakia": ["CZ1 0", "SK1 0"],
+    "Romania, Bulgaria,\nSerbia, Hungary": ["RO1 0", "BG1 0", "RS1 0", "HU1 0"],
+    "Bosnia, Montenegro,\nAlbania, Croatia": ["BA1 0", "ME1 0", "AL1 0", "HR1 0"],
     "Mazedonia, Greece": ["MK1 0", "GR1 0"],
 }
 
