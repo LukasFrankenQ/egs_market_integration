@@ -14,7 +14,6 @@ xaxis_mapper = {
     "2050": "5.0",
 }
 
-
 coarse_regions = {
     "Southern-Central\nGermany": ["DE1 6", "DE1 2", "DE1 4", "DE1 1", "DE1 7", "DE1 9", "DE1 8"],
     "Northern Germany": ["DE1 5", "DE1 0", "DE1 3"],
