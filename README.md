@@ -21,4 +21,4 @@ If you wish to re-run some of modelling
 1. install `envs/envoronment.yaml` and your local machine and activate it.
 2. check inside `plotting_data` which wildcards have been used for the model.
 4. (refer to `https://pypsa-eur.readthedocs.io/en/latest` for documentation on running the model.)
-3. Execute the model with the respective wildcards.
+3. execute the model with the respective wildcards.
