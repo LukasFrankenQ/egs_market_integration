@@ -10,17 +10,14 @@ from shapely.ops import unary_union
 
 sys.path.append(str(Path.cwd()))
 
+from data_path import DATA_PATH
 from plotting_constants import coarse_regions, reverse_coarse_regions
 
 
 idx = pd.IndexSlice
 
 regions = gpd.read_file(
-    Path.cwd().parent.parent.parent /
-    "cluster_data" /
-    "old_data" /
-    "resources" /
-    "regions_onshore_elec_s_72.geojson"
+    DATA_PATH / "regions_onshore_elec_s_72.geojson"
     ).set_crs("EPSG:4326").set_index("name")
 
 
@@ -113,41 +110,13 @@ def prepare_data_for_plot(costs, region, year, sustainability_factor=0.0025):
     return inters
 
 
-root = Path.cwd().parent.parent.parent / "cluster_data"
-
 def get_capacity_data(mode, op):
 
     index_col = [0,1,2]
     header = [0,1,2,3,4,5,6,7,8]
 
-    """
-    if mode == "chp" or mode == "dh":
-        df = pd.read_csv(
-            root / f"{mode}_data" / 
-            # f"csvs_{op}" / 
-            "nodal_capacities.csv", 
-            index_col=index_col,
-            header=header,
-            )
-
-    elif mode == "elec":
-        if op == "flex":
-            df = pd.read_csv(
-                root / f"elec_data_flex" / "nodal_capacities.csv",
-                index_col=index_col,
-                header=header,
-            )
-        else:
-            df = pd.read_csv(
-                root / f"{mode}_data" / "nodal_capacities.csv",
-                index_col=index_col,
-                header=header,
-            )
-    """
-
     df = pd.read_csv(
-        root /
-        "breyer_sweep" /
+        DATA_PATH /
         "joint_data" /
         "nodal_capacities.csv", 
         index_col=index_col, 
