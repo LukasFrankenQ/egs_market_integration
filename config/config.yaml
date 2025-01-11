@@ -36,19 +36,10 @@ scenario:
   - 2050
   # for myopic foresight
   egs_capex:
-  # - 2005
-  # - 2010
-  # - 2015
-  # - 2020
-  # - 2025
-  # - 2030
-  - 2035
-  # - 2040
-  # - 2045
-  # - 2050
+  - 2035 # 2020 refers to 100% Drilling Cost Relative to 2020 , 2030 refers to 55%, ..., 2050 refers to 20%
   egs_mode: 
   - "chp" 
-  - "dh" 
+  # - "dh" 
   # - "elec" 
   # can be 'elec' for electricity only generation
   # can be 'chp' for electricity and district heat
@@ -56,15 +47,14 @@ scenario:
   egs_op: # if flexible egs is allowed
   - "static" # flexible operations switched OFF
   # - "flex" # flexible operations switched ON
-  progress:
+  progress: # district heating progress: 0 means today's district heating share, 1 means maximum fraction of urban demand is supplied by district heating
   - 0.0
   # - 0.3
   # - 0.25
   # - 0.5
-  - 0.6
   # - 0.75
   - 1.0
-  use_waste_heat:
+  use_waste_heat: # false switches off low-grade heat recovery via Fischer-Tropsch
   # - false
   - true
 
