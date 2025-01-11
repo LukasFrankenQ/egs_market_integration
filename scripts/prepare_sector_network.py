@@ -3290,12 +3290,9 @@ def add_sweep_egs(n, snakemake, costs):
     logger.info(f"Received wildcard drilling cost: {drilling_cost}")
 
     injection_well_cost = annuity_factor * drilling_cost
-    # production_well_cost = annuity_factor * drilling_cost
     production_well_cost = 0.
     logger.warning("Currently all drilling cost are assigned to injection wells.")
 
-    # orc_fom = costs.at["organic rankine cycle", "FOM"] * 1e-2
-    # orc_capex = costs.at["organic rankine cycle", "investment"]
     orc_fom = snakemake.config['sector']['egs_orc_FOM']
     orc_capex = snakemake.config['sector']['egs_orc_capex']
 
@@ -3309,7 +3306,6 @@ def add_sweep_egs(n, snakemake, costs):
 
     logger.info(f"Using geothermal efficiency {eta_el} for electricity and {eta_dh} for district heating.")
 
-    # egs_cf = config["sector"]["egs_avg_capacity_factor"]
     egs_cf = pd.read_csv(
             snakemake.input.egs_efficiencies, parse_dates=True, index_col=0
         )
@@ -3456,33 +3452,6 @@ def add_sweep_egs(n, snakemake, costs):
             efficiency=eta_dh,
             carrier="geothermal heat chp dh",
         )
-
-        """
-        n.madd(
-            "Link",
-            nodes,
-            suffix=f" geothermal chp elec",
-            bus0=nodes + " geothermal surface bus",
-            bus1=nodes,
-            efficiency=eta_el * 2.,
-            location=nodes,
-            capital_cost=orc_cost * eta_el,
-            p_nom_extendable=True,
-            carrier="geothermal heat chp elec",
-        )
-        n.madd(
-            "Link",
-            nodes,
-            suffix=f" geothermal chp district heat",
-            bus0=nodes + " geothermal surface bus",
-            bus1=nodes + " urban central heat",
-            efficiency=eta_dh * 2.,
-            location=nodes,
-            capital_cost=orc_cost * 0.25 * eta_el,
-            p_nom_extendable=True,
-            carrier="geothermal heat chp dh",
-        )
-        """
 
 
 if __name__ == "__main__":
@@ -3661,7 +3630,6 @@ if __name__ == "__main__":
             "geothermal heat",
             nice_name="Geothermal Heat",
             color=snakemake.config["plotting"]["tech_colors"]["geothermal heat"],
-            # co2_emissions=costs.loc["geothermal", "CO2 intensity"],
             co2_emissions=0.,
         )
 

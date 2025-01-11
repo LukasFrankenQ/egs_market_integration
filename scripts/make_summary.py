@@ -783,10 +783,7 @@ def calculate_nodal_geothermal_stats(n, label, nodal_geothermal_stats):
     df = df.stack()
 
     nodal_geothermal_stats[label] = df
-
     nodal_geothermal_stats = nodal_geothermal_stats.reindex(df.index.union(nodal_geothermal_stats.index))
-
-
     nodal_geothermal_stats.loc[df.index, label] = df
 
     return nodal_geothermal_stats

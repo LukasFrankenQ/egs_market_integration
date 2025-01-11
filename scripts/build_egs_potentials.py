@@ -181,7 +181,6 @@ def prepare_capex():
         factor_mean)
     )
 
-    # capex = pd.DataFrame(index=prepared_data[2050].geometry, columns=prepared_data.keys())
     capex = pd.DataFrame(index=prepared_data[2050].geometry, columns=factor_mean.index)
     capex.loc[:, 2050] = prepared_data[2050]["CAPEX"]
 
@@ -201,9 +200,6 @@ def prepare_capex():
 
         capex.loc[missing_idx, [sooner]] = from_later * factor_mean.loc[later]
 
-    # capacity_factor = 0.9
-
-    # orc_cost = 1900 # USD/kW; value from Aghahosseini, Breyer (2022)
     orc_cost = 1900 * fmm**len(factor_mean.loc[:2015]) # USD/kW
     adj_orc_cost = orc_cost
 
@@ -214,7 +210,6 @@ def prepare_capex():
         adj_orc_cost /= factor_mean.loc[year]
         capex.loc[:, year] = capex[year] - adj_orc_cost
 
-    # capex = capex / capacity_factor * efficiency
     capex *= efficiency
     
     return capex

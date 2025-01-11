@@ -608,17 +608,6 @@ def add_egs_chp_constraint(n):
         name="equalizes_p_nom_of_chp_elec_and_chp_district_heat",
     )
 
-    # define iso fuel lines
-    # link_p = get_var(n, "Link", "p")
-    # link_p_nom = get_var(n, "Link", "p_nom")
-
-    # lhs = linexpr(
-    #     (1, link_p[elec_index]),
-    #     (1, link_p[heat_index].values),
-    #     (-1, link_p_nom[heat_index].values))
-
-    # define_constraints(n, lhs, "", 0, "egschplink", "egs_chp_top_iso_fuel_line")
-
 
 def extra_functionality(n, snapshots):
     """
@@ -650,9 +639,6 @@ def extra_functionality(n, snapshots):
     if "chp" in snakemake.wildcards:
         add_egs_chp_constraint(n)
         print("egs chp constraint was applied")
-    #     pass
-    # else:
-    # print("egs chp constraint was not applied due to multilink implementation")
 
 
 def solve_network(n, config, solving, opts="", **kwargs):

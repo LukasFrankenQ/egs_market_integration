@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: : 2023 The PyPSA-Eur Authors
 #
 # SPDX-License-Identifier: MIT
-'''
 
 
 rule build_population_layouts:
@@ -68,7 +67,6 @@ rule build_simplified_population_layouts:
         "../scripts/build_clustered_population_layouts.py"
 
 
-'''
 if config["sector"]["gas_network"] or config["sector"]["H2_retrofit"]:
 
     rule build_gas_network:
@@ -139,8 +137,6 @@ if not (config["sector"]["gas_network"] or config["sector"]["H2_retrofit"]):
     # this is effecively an `else` statement which is however not liked by snakefmt
 
     gas_infrastructure = {}
-'''
-
 
 rule build_heat_demands:
     params:
@@ -298,7 +294,6 @@ rule build_biomass_potentials:
         "../scripts/build_biomass_potentials.py"
 
 
-'''
 if config["sector"]["biomass_transport"]:
 
     rule build_biomass_transport_costs:
@@ -368,7 +363,6 @@ if not config["sector"]["regional_co2_sequestration_potential"]["enable"]:
     # this is effecively an `else` statement which is however not liked by snakefmt
     build_sequestration_potentials_output = {}
 
-'''
 
 rule build_salt_cavern_potentials:
     input:
@@ -606,7 +600,6 @@ rule build_industrial_energy_demand_per_node_today:
         "../scripts/build_industrial_energy_demand_per_node_today.py"
 
 
-'''
 if config["sector"]["retrofitting"]["retro_endogen"]:
 
     rule build_retro_cost:
@@ -644,7 +637,6 @@ if config["sector"]["retrofitting"]["retro_endogen"]:
 if not config["sector"]["retrofitting"]["retro_endogen"]:
     # this is effecively an `else` statement which is however not liked by snakefmt
     build_retro_cost_output = {}
-'''
 
 
 rule build_population_weighted_energy_totals:
@@ -754,7 +746,6 @@ rule build_egs_potentials:
     script:
         "../scripts/build_egs_potentials.py"
 
-'''
 
 rule prepare_sector_network:
     params:
